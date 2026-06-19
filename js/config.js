@@ -6,8 +6,8 @@ export const FINERACT_DEMO = {
   serverUrl:  'https://demo.mifos.io',
   tenantId:   'default',
   apiBase:    '/fineract-provider/api/v1',
-  requestTimeoutMs:     30000,
-  autoConnectTimeoutMs: 10000
+  requestTimeoutMs:     30000000,
+  autoConnectTimeoutMs: 10000000
 };
 
 export function getRuntimeConfig() {
