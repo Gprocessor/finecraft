@@ -115,13 +115,26 @@ function renderLogin(container) {
     btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Signing in…';
     err.style.display = 'none';
 
+    // Progressive status messages — the public demo server can be slow,
+    // especially on a cold start, so reassure rather than look stuck.
+    const t1 = setTimeout(() => {
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Still connecting…';
+    }, 5000);
+    const t2 = setTimeout(() => {
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Demo server is waking up, hang tight…';
+    }, 15000);
+
     try {
       await login({ serverUrl, tenantId, username, password });
     } catch (e) {
       err.style.display = '';
-      err.textContent = e.message || 'Sign in failed — check server and credentials';
+      err.textContent = e.code === 'TIMEOUT'
+        ? 'The demo server is taking too long to respond. It may be waking from idle — please try again in a moment.'
+        : (e.message || 'Sign in failed — check server and credentials');
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+    } finally {
+      clearTimeout(t1); clearTimeout(t2);
     }
   };
 
