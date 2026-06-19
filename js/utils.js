@@ -87,9 +87,3 @@ export const fmtDate = d => {
   if (isNaN(dt)) return String(d);
   return dt.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
 };
-
-// debounce — used in search.js and misc filter inputs
-export function debounce(fn, delay = 300) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
-}
