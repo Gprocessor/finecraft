@@ -67,4 +67,4 @@ python3 -m http.server 8080
 3. Push to `main` — workflow auto-deploys
 
 ---
-Built by **Processor** · Nestlé Agbara · Power Platform & MIS Division
+Built by **Processor** Power Platform & MIS Division
