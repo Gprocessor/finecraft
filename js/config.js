@@ -7,7 +7,7 @@
    idle / cold-starting). Timeouts below are set generously to accommodate
    this rather than failing fast. */
 export const FINERACT_DEMO = {
-  serverUrl:  'https://demo.mifos.io',
+  serverUrl:  'https://132.226.213.96:8443',
   tenantId:   'default',
   apiBase:    '/fineract-provider/api/v1',
   requestTimeoutMs:     45000,
