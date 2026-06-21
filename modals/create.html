@@ -1,0 +1,702 @@
+<!-- =====================================================
+     MODAL: QUICK ACTION
+===================================================== -->
+<div class="modal-overlay" id="quickModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fa fa-bolt text-teal" style="margin-right:8px"></i>Quick Action</div>
+      <button class="modal-close" onclick="Modal.close('quickModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2 gap-3">
+        <button class="btn btn-secondary" style="flex-direction:column;gap:8px;padding:18px;height:auto"
+                onclick="Modal.close('quickModal');Modal.open('newClientModal')">
+          <i class="fa fa-user-plus" style="font-size:20px;color:var(--teal-500)"></i><span>New Client</span>
+        </button>
+        <button class="btn btn-secondary" style="flex-direction:column;gap:8px;padding:18px;height:auto"
+                onclick="Modal.close('quickModal');Modal.open('newLoanModal')">
+          <i class="fa fa-file-invoice-dollar" style="font-size:20px;color:var(--amber-400)"></i><span>New Loan</span>
+        </button>
+        <button class="btn btn-secondary" style="flex-direction:column;gap:8px;padding:18px;height:auto"
+                onclick="Modal.close('quickModal');Modal.open('newSavingsModal')">
+          <i class="fa fa-piggy-bank" style="font-size:20px;color:var(--green-400)"></i><span>New Savings</span>
+        </button>
+        <button class="btn btn-secondary" style="flex-direction:column;gap:8px;padding:18px;height:auto"
+                onclick="Modal.close('quickModal');Modal.open('repaymentModal')">
+          <i class="fa fa-hand-holding-usd" style="font-size:20px;color:var(--teal-500)"></i><span>Repayment</span>
+        </button>
+        <button class="btn btn-secondary" style="flex-direction:column;gap:8px;padding:18px;height:auto"
+                onclick="Modal.close('quickModal');Modal.open('journalEntryModal')">
+          <i class="fa fa-book" style="font-size:20px;color:var(--amber-400)"></i><span>Journal Entry</span>
+        </button>
+        <button class="btn btn-secondary" style="flex-direction:column;gap:8px;padding:18px;height:auto"
+                onclick="Modal.close('quickModal');Modal.open('bulkImportModal')">
+          <i class="fa fa-file-import" style="font-size:20px;color:var(--green-400)"></i><span>Bulk Import</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW CLIENT
+===================================================== -->
+<div class="modal-overlay" id="newClientModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">New Client</div>
+        <div class="modal-subtitle">Create a new borrower or member client</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('newClientModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group">
+          <label class="form-label">First Name <span class="req">*</span></label>
+          <input class="form-control" id="ncFirstName" placeholder="e.g. John"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name <span class="req">*</span></label>
+          <input class="form-control" id="ncLastName" placeholder="e.g. Banda"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile No.</label>
+          <input class="form-control" id="ncMobile" placeholder="+229 …"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input class="form-control" id="ncDOB" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gender</label>
+          <select class="form-control" id="ncGender">
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Submitted Date</label>
+          <input class="form-control" id="ncSubmitDate" type="date"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Office <span class="req">*</span></label>
+          <select class="form-control" id="ncOffice">
+            <option value="">— Loading offices… —</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Loan Officer</label>
+          <select class="form-control" id="ncStaff">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">External ID</label>
+          <input class="form-control" id="ncExtId" placeholder="National ID or reference"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Classification</label>
+          <select class="form-control" id="ncClassification">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-check">
+            <input type="checkbox" id="ncIsStaff" style="accent-color:var(--teal-500)">
+            &nbsp;Is Staff Member
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newClientModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Clients.submitNew()">
+        <i class="fa fa-save"></i> Create Client
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW LOAN
+===================================================== -->
+<div class="modal-overlay" id="newLoanModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">New Loan Application</div>
+        <div class="modal-subtitle">Submit a loan application for approval</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('newLoanModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Client <span class="req">*</span></label>
+          <input class="form-control" id="nlClientSearch" placeholder="Type client name to search…"
+                 oninput="Forms.setupClientSearch('nlClientSearch','nlClient')"/>
+          <input type="hidden" id="nlClient"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Loan Product <span class="req">*</span></label>
+          <select class="form-control" id="nlProduct">
+            <option value="">— Loading products… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Principal Amount <span class="req">*</span></label>
+          <div class="input-group">
+            <div class="input-addon">$</div>
+            <input class="form-control" id="nlPrincipal" type="number" placeholder="0.00"
+                   style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Loan Term (months)</label>
+          <input class="form-control" id="nlTerm" type="number" placeholder="12"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nominal Interest Rate (% p.a.)</label>
+          <input class="form-control" id="nlRate" type="number" placeholder="18"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Expected Disbursement Date</label>
+          <input class="form-control" id="nlDisbDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Repayment Frequency</label>
+          <select class="form-control" id="nlRepFreq">
+            <option value="2">Monthly</option>
+            <option value="1">Weekly</option>
+            <option value="0">Daily</option>
+            <option value="3">Quarterly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amortization Type</label>
+          <select class="form-control" id="nlAmort">
+            <option value="1">Equal Installments</option>
+            <option value="0">Equal Principal Payments</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Fund</label>
+          <select class="form-control" id="nlFund">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Loan Officer</label>
+          <select class="form-control" id="nlOfficer">
+            <option value="">— Loading officers… —</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newLoanModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Loans.submitNew()">
+        <i class="fa fa-paper-plane"></i> Submit Application
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW SAVINGS ACCOUNT
+===================================================== -->
+<div class="modal-overlay" id="newSavingsModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Savings Account</div>
+      <button class="modal-close" onclick="Modal.close('newSavingsModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Client <span class="req">*</span></label>
+          <input class="form-control" id="nsSavClientSearch" placeholder="Type client name…"
+                 oninput="Forms.setupClientSearch('nsSavClientSearch','nsSavClient')"/>
+          <input type="hidden" id="nsSavClient"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Savings Product <span class="req">*</span></label>
+          <select class="form-control" id="nsSavProduct">
+            <option value="">— Loading products… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Submitted Date</label>
+          <input class="form-control" id="nsSavSubmit" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Opening Balance</label>
+          <div class="input-group">
+            <div class="input-addon">$</div>
+            <input class="form-control" id="nsSavBalance" type="number" placeholder="0.00"
+                   style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Field Officer</label>
+          <select class="form-control" id="nsSavOfficer">
+            <option value="">— None —</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newSavingsModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Savings.submitNew()">
+        <i class="fa fa-save"></i> Create Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW FIXED DEPOSIT
+===================================================== -->
+<div class="modal-overlay" id="newFDModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Fixed Deposit Account</div>
+      <button class="modal-close" onclick="Modal.close('newFDModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Client <span class="req">*</span></label>
+          <input class="form-control" id="nfdClientSearch" placeholder="Type client name…"
+                 oninput="Forms.setupClientSearch('nfdClientSearch','nfdClient')"/>
+          <input type="hidden" id="nfdClient"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">FD Product <span class="req">*</span></label>
+          <select class="form-control" id="nfdProduct">
+            <option value="">— Loading products… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deposit Amount <span class="req">*</span></label>
+          <div class="input-group">
+            <div class="input-addon">$</div>
+            <input class="form-control" id="nfdAmount" type="number" placeholder="0.00"
+                   style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deposit Period (months)</label>
+          <input class="form-control" id="nfdPeriod" type="number" placeholder="12"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Submitted Date</label>
+          <input class="form-control" id="nfdSubmit" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Maturity Instruction</label>
+          <select class="form-control" id="nfdMaturity">
+            <option value="1">Transfer to Savings</option>
+            <option value="2">Re-invest Principal</option>
+            <option value="3">Cash Payout</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newFDModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Deposits.submitNewFD()">
+        <i class="fa fa-save"></i> Create FD Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW SHARE ACCOUNT
+===================================================== -->
+<div class="modal-overlay" id="newShareModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Share Account</div>
+      <button class="modal-close" onclick="Modal.close('newShareModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Client <span class="req">*</span></label>
+          <input class="form-control" id="nshaClientSearch" placeholder="Type client name…"
+                 oninput="Forms.setupClientSearch('nshaClientSearch','nshaClient')"/>
+          <input type="hidden" id="nshaClient"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Share Product <span class="req">*</span></label>
+          <select class="form-control" id="nshaProduct">
+            <option value="">— Loading products… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Requested Shares <span class="req">*</span></label>
+          <input class="form-control" id="nshaShares" type="number" placeholder="100"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Application Date</label>
+          <input class="form-control" id="nshaDate" type="date"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newShareModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Toast.success('Submitted','Share account application submitted')">
+        <i class="fa fa-save"></i> Submit Application
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW GROUP
+===================================================== -->
+<div class="modal-overlay" id="newGroupModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">New Group</div>
+        <div class="modal-subtitle">Create a JLG or savings group</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('newGroupModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Group Name <span class="req">*</span></label>
+          <input class="form-control" id="ngName" placeholder="e.g. Akosombo Women's Group"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Office <span class="req">*</span></label>
+          <select class="form-control" id="ngOffice">
+            <option value="">— Loading offices… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Staff / Loan Officer</label>
+          <select class="form-control" id="ngStaff">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Center</label>
+          <select class="form-control" id="ngCenter">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Activation Date</label>
+          <input class="form-control" id="ngActivation" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">External ID</label>
+          <input class="form-control" id="ngExtId" placeholder="Optional"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newGroupModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Groups.submitNew()">
+        <i class="fa fa-save"></i> Create Group
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW CENTER
+===================================================== -->
+<div class="modal-overlay" id="newCenterModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Center</div>
+      <button class="modal-close" onclick="Modal.close('newCenterModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Center Name <span class="req">*</span></label>
+          <input class="form-control" id="nctrName" placeholder="e.g. Akosombo District Center"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Office <span class="req">*</span></label>
+          <select class="form-control" id="nctrOffice">
+            <option value="">— Loading offices… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Staff / Loan Officer</label>
+          <select class="form-control" id="nctrStaff">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Activation Date</label>
+          <input class="form-control" id="nctrActivation" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Meeting Day</label>
+          <select class="form-control" id="nctrMeetDay">
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+            <option>Thursday</option><option>Friday</option><option>Saturday</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Meeting Time</label>
+          <input class="form-control" id="nctrMeetTime" type="time" value="09:00"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newCenterModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Toast.success('Center Created','New center created successfully')">
+        <i class="fa fa-save"></i> Create Center
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW ACCOUNT TRANSFER
+===================================================== -->
+<div class="modal-overlay" id="newTransferModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Account Transfer</div>
+      <button class="modal-close" onclick="Modal.close('newTransferModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">From Account <span class="req">*</span></label>
+          <input class="form-control" id="ntFrom" placeholder="Enter savings account ID"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">To Account <span class="req">*</span></label>
+          <input class="form-control" id="ntTo" placeholder="Enter account ID"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount <span class="req">*</span></label>
+          <div class="input-group">
+            <div class="input-addon">$</div>
+            <input class="form-control" id="ntAmount" type="number" placeholder="0.00"
+                   style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Transfer Date</label>
+          <input class="form-control" id="ntDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input class="form-control" id="ntDesc" placeholder="Optional"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newTransferModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Transfers.submit()">
+        <i class="fa fa-check"></i> Execute Transfer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: REMITTANCE (4-step stepper)
+===================================================== -->
+<div class="modal-overlay" id="remittanceModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Remittance</div>
+      <button class="modal-close" onclick="Modal.close('remittanceModal');Forms.Remit.reset()">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step-item">
+          <div class="step-circle active" id="rs1">1</div>
+          <div class="step-label active" id="rl1">Sender</div>
+        </div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step-item">
+          <div class="step-circle" id="rs2">2</div>
+          <div class="step-label" id="rl2">Beneficiary</div>
+        </div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step-item">
+          <div class="step-circle" id="rs3">3</div>
+          <div class="step-label" id="rl3">Transfer</div>
+        </div>
+        <div class="step-line" id="sl3"></div>
+        <div class="step-item">
+          <div class="step-circle" id="rs4">4</div>
+          <div class="step-label" id="rl4">Confirm</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Sender -->
+      <div id="remit-1">
+        <div class="form-grid fg-2">
+          <div class="form-group fg-span">
+            <label class="form-label">Sender (Client) <span class="req">*</span></label>
+            <input class="form-control" id="remitSender" placeholder="Search client name…"/>
+          </div>
+          <div class="form-group fg-span">
+            <label class="form-label">Sending Office</label>
+            <select class="form-control" id="remitOffice">
+              <option>Head Office</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Beneficiary -->
+      <div id="remit-2" style="display:none">
+        <div class="form-grid fg-2">
+          <div class="form-group">
+            <label class="form-label">Beneficiary Name <span class="req">*</span></label>
+            <input class="form-control" id="remitBeneName" placeholder="Full name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number</label>
+            <input class="form-control" id="remitBeneMobile" placeholder="+229…"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ID Type</label>
+            <select class="form-control">
+              <option>National ID</option><option>Passport</option><option>Voter ID</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ID Number</label>
+            <input class="form-control" id="remitBeneId"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Transfer Details -->
+      <div id="remit-3" style="display:none">
+        <div class="form-grid fg-2">
+          <div class="form-group">
+            <label class="form-label">Amount <span class="req">*</span></label>
+            <div class="input-group">
+              <div class="input-addon">$</div>
+              <input class="form-control" id="remitAmount" type="number" placeholder="0.00"
+                     style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Currency</label>
+            <select class="form-control" id="remitCurrency">
+              <option>USD</option><option>XOF</option><option>GHS</option><option>NGN</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Transfer Date</label>
+            <input class="form-control" id="remitDate" type="date"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment Mode</label>
+            <select class="form-control" id="remitMode">
+              <option>Mobile Money</option><option>Cash</option><option>Bank Transfer</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Confirm -->
+      <div id="remit-4" style="display:none">
+        <div class="card" style="background:var(--bg-card-alt)">
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-item"><div class="info-label">Sender</div>        <div class="info-value" id="remitConfSender">—</div></div>
+              <div class="info-item"><div class="info-label">Beneficiary</div>   <div class="info-value" id="remitConfBene">—</div></div>
+              <div class="info-item"><div class="info-label">Amount</div>        <div class="info-value mono text-teal" id="remitConfAmount">—</div></div>
+              <div class="info-item"><div class="info-label">Currency</div>      <div class="info-value" id="remitConfCurrency">—</div></div>
+              <div class="info-item"><div class="info-label">Payment Mode</div>  <div class="info-value" id="remitConfMode">—</div></div>
+              <div class="info-item"><div class="info-label">Date</div>          <div class="info-value" id="remitConfDate">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="remitBack" onclick="Forms.Remit.back()" style="display:none">
+        <i class="fa fa-arrow-left"></i> Back
+      </button>
+      <button class="btn btn-primary" id="remitNext" onclick="Forms.Remit.next()">
+        <i class="fa fa-arrow-right"></i> Next
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: BULK IMPORT
+===================================================== -->
+<div class="modal-overlay" id="bulkImportModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fa fa-file-import text-teal" style="margin-right:8px"></i>Bulk Import</div>
+      <button class="modal-close" onclick="Modal.close('bulkImportModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group mb-3">
+        <label class="form-label">Entity Type</label>
+        <select class="form-control" id="biEntity">
+          <option>Clients</option><option>Loans</option><option>Savings Accounts</option>
+          <option>Fixed Deposits</option><option>Recurring Deposits</option>
+          <option>Groups</option><option>Centers</option><option>Offices</option>
+          <option>Staff</option><option>GL Opening Balances</option>
+        </select>
+      </div>
+      <div class="form-group mb-3">
+        <label class="form-label">Office</label>
+        <select class="form-control" id="biOffice">
+          <option value="">— Loading offices… —</option>
+        </select>
+      </div>
+      <!-- Drop zone -->
+      <div id="biDropzone"
+           style="border:2px dashed var(--border);border-radius:var(--radius-md);padding:32px;text-align:center;cursor:pointer;transition:border-color var(--transition)"
+           onmouseover="this.style.borderColor='var(--teal-500)'"
+           onmouseout="this.style.borderColor='var(--border)'"
+           onclick="document.getElementById('biFileInput').click()">
+        <i class="fa fa-cloud-upload-alt" style="font-size:32px;color:var(--teal-500);display:block;margin-bottom:12px"></i>
+        <div class="fw-600 mb-1">Drop Excel file here or click to browse</div>
+        <div class="fz-12 text-muted">.xlsx or .xls — max 10MB</div>
+        <input type="file" id="biFileInput" accept=".xlsx,.xls" style="display:none"
+               onchange="document.getElementById('biFileName').textContent=this.files[0]?.name||''"/>
+      </div>
+      <div class="fz-12 text-teal mt-2" id="biFileName"></div>
+      <div class="flex gap-2 mt-3">
+        <button class="btn btn-secondary btn-sm w-full"
+                onclick="Toast.info('Template','Downloading import template…')">
+          <i class="fa fa-download"></i> Download Template
+        </button>
+        <button class="btn btn-secondary btn-sm w-full"
+                onclick="Toast.info('History','Loading import history…')">
+          <i class="fa fa-history"></i> Import History
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('bulkImportModal')">Cancel</button>
+      <button class="btn btn-primary"
+              onclick="Modal.close('bulkImportModal');Toast.success('Import','File submitted for processing')">
+        <i class="fa fa-upload"></i> Upload &amp; Import
+      </button>
+    </div>
+  </div>
+</div>

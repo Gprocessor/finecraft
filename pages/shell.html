@@ -1,0 +1,154 @@
+<!-- =====================================================
+     APP SHELL — Sidebar + Topbar
+     All page content is injected inside #contentArea
+===================================================== -->
+<div class="app-shell" id="appShell">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand" onclick="Router.navigate('dashboard')">
+      <div class="brand-icon">F</div>
+      <div class="brand-text">
+        <div class="brand-name">FinCraft</div>
+        <div class="brand-sub">Fineract Platform</div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="sidebar-scroll">
+
+      <!-- Overview -->
+      <div class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <div class="nav-item" data-page="dashboard"    onclick="Router.navigate('dashboard',this)">   <div class="nav-icon"><i class="fa fa-th-large"></i></div>       <span class="nav-label">Dashboard</span></div>
+        <div class="nav-item" data-page="analytics"    onclick="Router.navigate('analytics',this)">   <div class="nav-icon"><i class="fa fa-chart-line"></i></div>      <span class="nav-label">Analytics</span></div>
+        <div class="nav-item" data-page="tasks"        onclick="Router.navigate('tasks',this)">       <div class="nav-icon"><i class="fa fa-tasks"></i></div>           <span class="nav-label">Checker Inbox</span><span class="nav-badge" id="tasksBadge">…</span></div>
+        <div class="nav-item" data-page="navigation"   onclick="Router.navigate('navigation',this)">  <div class="nav-icon"><i class="fa fa-compass"></i></div>         <span class="nav-label">Navigation</span></div>
+        <div class="nav-item" data-page="search"       onclick="Router.navigate('search',this)">      <div class="nav-icon"><i class="fa fa-search"></i></div>          <span class="nav-label">Search</span></div>
+      </div>
+
+      <!-- Clients & Accounts -->
+      <div class="nav-section">
+        <div class="nav-section-label">Clients &amp; Accounts</div>
+        <div class="nav-item" data-page="clients"      onclick="Router.navigate('clients',this)">     <div class="nav-icon"><i class="fa fa-users"></i></div>           <span class="nav-label">Clients</span></div>
+        <div class="nav-item" data-page="groups"       onclick="Router.navigate('groups',this)">      <div class="nav-icon"><i class="fa fa-sitemap"></i></div>         <span class="nav-label">Groups</span></div>
+        <div class="nav-item" data-page="centers"      onclick="Router.navigate('centers',this)">     <div class="nav-icon"><i class="fa fa-map-marker-alt"></i></div>  <span class="nav-label">Centers</span></div>
+        <div class="nav-item" data-page="loans"        onclick="Router.navigate('loans',this)">       <div class="nav-icon"><i class="fa fa-money-bill-wave"></i></div> <span class="nav-label">Loans</span></div>
+        <div class="nav-item" data-page="savings"      onclick="Router.navigate('savings',this)">     <div class="nav-icon"><i class="fa fa-piggy-bank"></i></div>      <span class="nav-label">Savings</span></div>
+        <div class="nav-item" data-page="deposits"     onclick="Router.navigate('deposits',this)">    <div class="nav-icon"><i class="fa fa-vault"></i></div>           <span class="nav-label">Deposits</span></div>
+        <div class="nav-item" data-page="shares"       onclick="Router.navigate('shares',this)">      <div class="nav-icon"><i class="fa fa-chart-pie"></i></div>       <span class="nav-label">Shares</span></div>
+        <div class="nav-item" data-page="collaterals"  onclick="Router.navigate('collaterals',this)"> <div class="nav-icon"><i class="fa fa-shield-alt"></i></div>      <span class="nav-label">Collaterals</span></div>
+        <div class="nav-item" data-page="collections"  onclick="Router.navigate('collections',this)"> <div class="nav-icon"><i class="fa fa-hand-holding-usd"></i></div><span class="nav-label">Collections</span></div>
+        <div class="nav-item" data-page="transfers"    onclick="Router.navigate('transfers',this)">   <div class="nav-icon"><i class="fa fa-exchange-alt"></i></div>    <span class="nav-label">Transfers</span></div>
+        <div class="nav-item" data-page="remittances"  onclick="Router.navigate('remittances',this)"> <div class="nav-icon"><i class="fa fa-paper-plane"></i></div>     <span class="nav-label">Remittances</span></div>
+      </div>
+
+      <!-- Finance -->
+      <div class="nav-section">
+        <div class="nav-section-label">Finance</div>
+        <div class="nav-item" data-page="accounting"   onclick="Router.navigate('accounting',this)">  <div class="nav-icon"><i class="fa fa-calculator"></i></div>      <span class="nav-label">Accounting</span></div>
+        <div class="nav-item" data-page="reports"      onclick="Router.navigate('reports',this)">     <div class="nav-icon"><i class="fa fa-chart-bar"></i></div>       <span class="nav-label">Reports</span></div>
+        <div class="nav-item" data-page="surveys"      onclick="Router.navigate('surveys',this)">     <div class="nav-icon"><i class="fa fa-poll"></i></div>            <span class="nav-label">Surveys</span></div>
+      </div>
+
+      <!-- Admin -->
+      <div class="nav-section">
+        <div class="nav-section-label">Admin</div>
+        <div class="nav-item" data-page="products"     onclick="Router.navigate('products',this)">    <div class="nav-icon"><i class="fa fa-box"></i></div>             <span class="nav-label">Products</span></div>
+        <div class="nav-item" data-page="organization" onclick="Router.navigate('organization',this)"><div class="nav-icon"><i class="fa fa-building"></i></div>        <span class="nav-label">Organization</span></div>
+        <div class="nav-item" data-page="system"       onclick="Router.navigate('system',this)">      <div class="nav-icon"><i class="fa fa-cog"></i></div>             <span class="nav-label">System</span></div>
+        <div class="nav-item" data-page="users"        onclick="Router.navigate('users',this)">       <div class="nav-icon"><i class="fa fa-user-shield"></i></div>     <span class="nav-label">Users &amp; Roles</span></div>
+        <div class="nav-item" data-page="templates"    onclick="Router.navigate('templates',this)">   <div class="nav-icon"><i class="fa fa-file-code"></i></div>       <span class="nav-label">Templates</span></div>
+        <div class="nav-item" data-page="self-service" onclick="Router.navigate('self-service',this)"><div class="nav-icon"><i class="fa fa-mobile-alt"></i></div>      <span class="nav-label">Self Service</span></div>
+      </div>
+
+    </div><!-- /sidebar-scroll -->
+
+    <!-- User footer -->
+    <div class="sidebar-footer">
+      <div class="user-card" onclick="Router.navigate('profile')">
+        <div class="user-avatar" id="sbAvatar">M</div>
+        <div class="user-info">
+          <div class="user-name"  id="sbName">Loading…</div>
+          <div class="user-role"  id="sbTenant">—</div>
+        </div>
+      </div>
+    </div>
+
+  </aside><!-- /sidebar -->
+
+  <!-- ═══════════════ MAIN AREA ═══════════════ -->
+  <div class="main-area">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+      <!-- Sidebar toggle -->
+      <button class="topbar-btn" onclick="App.toggleSidebar()" title="Toggle sidebar">
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <!-- Breadcrumb -->
+      <div class="topbar-breadcrumb">
+        <span class="text-muted">FinCraft</span>
+        <i class="fa fa-chevron-right" style="font-size:9px;color:var(--text-muted)"></i>
+        <span class="crumb-current" id="breadcrumb">Dashboard</span>
+      </div>
+
+      <!-- Global search -->
+      <div style="position:relative;flex:1;max-width:280px;margin:0 auto">
+        <div class="topbar-search">
+          <i class="fa fa-search"></i>
+          <input id="gsInput" type="text"
+                 placeholder="Search… (Ctrl+K)"
+                 onfocus="document.getElementById('gsResults').classList.add('open');GSearch.onInput(this.value)"
+                 oninput="GSearch.onInput(this.value)"
+                 autocomplete="off"/>
+        </div>
+        <div class="search-results" id="gsResults"></div>
+      </div>
+
+      <!-- Tenant pill -->
+      <div class="topbar-tenant" title="Connected server">
+        <i class="fa fa-server" style="font-size:10px"></i>
+        <span class="tenant-id" id="tbTenant">—</span>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex gap-1">
+        <button class="topbar-btn" onclick="CMD.open()"                title="Command Palette (Ctrl+K)"><i class="fa fa-terminal"></i></button>
+        <button class="topbar-btn" onclick="Modal.open('quickModal')"  title="Quick Action"><i class="fa fa-plus"></i></button>
+        <button class="topbar-btn" onclick="Router.navigate('notifications')" title="Notifications" style="position:relative">
+          <i class="fa fa-bell"></i>
+          <div class="topbar-badge" id="notifBadge" style="display:none">0</div>
+        </button>
+        <button class="topbar-btn" id="themeBtn" onclick="App.toggleTheme()" title="Toggle theme">
+          <i class="fa fa-moon"></i>
+        </button>
+        <div class="topbar-divider"></div>
+        <div class="dropdown" id="userDrop">
+          <button class="topbar-btn" onclick="Dropdown.toggle('userDrop')">
+            <i class="fa fa-user-circle" style="font-size:17px"></i>
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-header">Account</div>
+            <div class="dropdown-item" onclick="Router.navigate('profile')">   <i class="fa fa-id-card"></i>     My Profile</div>
+            <div class="dropdown-item" onclick="Router.navigate('settings')">  <i class="fa fa-cog"></i>         Settings</div>
+            <div class="dropdown-item" onclick="Modal.open('configWizardModal')"><i class="fa fa-magic"></i>     Setup Wizard</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item danger" onclick="App.logout()">          <i class="fa fa-sign-out-alt"></i> Sign Out</div>
+          </div>
+        </div>
+      </div>
+
+    </header><!-- /topbar -->
+
+    <!-- PAGE CONTENT — filled by Router + page fragments -->
+    <main class="content-area" id="contentArea">
+      <!-- Pages injected here by index.html includes -->
+    </main>
+
+  </div><!-- /main-area -->
+</div><!-- /app-shell -->

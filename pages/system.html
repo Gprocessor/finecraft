@@ -1,0 +1,718 @@
+<!-- =====================================================
+     PAGE: SYSTEM
+===================================================== -->
+<div class="page" id="page-system">
+  <div class="page-header">
+    <div>
+      <div class="page-title">System</div>
+      <div class="page-subtitle">Configurations, data tables, audit trails, roles and jobs</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'sys-configs');Pages.System.loadConfigurations()">Configurations</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-datatables')">Data Tables</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-audit');Pages.System.loadAuditTrails()">Audit Trails</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-codes');Pages.System.loadCodes()">Codes &amp; Values</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-roles');Pages.System.loadRoles()">Roles &amp; Permissions</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-external')">External Services</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-events')">External Events</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-jobs');Pages.System.loadJobs()">Manage Jobs</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-hooks')">Manage Hooks</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-entitymap')">Entity Mapping</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'sys-info');Pages.System.loadServerInfo()">System Info</button>
+  </div>
+
+  <!-- Configurations -->
+  <div class="tab-panel active" id="sys-configs">
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Configuration</th><th>Value</th><th></th></tr></thead>
+          <tbody id="configsBody">
+            <tr><td colspan="3" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading configurations…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Tables -->
+  <div class="tab-panel" id="sys-datatables">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Data Table','Data table builder coming soon')">
+        <i class="fa fa-plus"></i> New Data Table
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Table Name</th><th>Registered For</th><th>Multi-Row</th><th></th></tr></thead>
+          <tbody id="dataTablesBody">
+            <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading data tables…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Trails -->
+  <div class="tab-panel" id="sys-audit">
+    <div class="filter-bar mb-3">
+      <input class="form-control" type="date" style="width:auto" id="auditFrom"/>
+      <input class="form-control" type="date" style="width:auto" id="auditTo"/>
+      <select class="form-control" style="width:auto" id="auditUser">
+        <option value="">All Users</option>
+      </select>
+      <select class="form-control" style="width:auto" id="auditAction">
+        <option value="">All Actions</option>
+        <option>CREATE</option><option>UPDATE</option><option>DELETE</option>
+        <option>APPROVE</option><option>DISBURSE</option><option>REPAYMENT</option>
+      </select>
+      <button class="btn btn-secondary btn-sm"
+              onclick="Pages.System.loadAuditTrails({fromDate:document.getElementById('auditFrom').value,toDate:document.getElementById('auditTo').value})">
+        <i class="fa fa-search"></i> Search
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Date / Time</th><th>Action</th><th>Entity</th><th>Resource ID</th><th>Made By</th><th>HTTP</th></tr></thead>
+          <tbody id="auditBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading audit trail…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Codes & Values -->
+  <div class="tab-panel" id="sys-codes">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Code','Add code form coming soon')">
+        <i class="fa fa-plus"></i> Add Code
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Code Name</th><th>System Defined</th><th></th></tr></thead>
+          <tbody id="codesBody">
+            <tr><td colspan="3" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading codes…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roles & Permissions -->
+  <div class="tab-panel" id="sys-roles">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Role','New role form coming soon')">
+        <i class="fa fa-plus"></i> New Role
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Role</th><th>Description</th><th></th></tr></thead>
+          <tbody id="rolesBody">
+            <tr><td colspan="3" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading roles…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- External Services -->
+  <div class="tab-panel" id="sys-external">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-plug"></i></div>
+      <h3>External Services</h3>
+      <p>Configure SMS gateways, email providers and notification services.</p>
+      <button class="btn btn-primary mt-3" onclick="Toast.info('External Services','Configuration form coming soon')">
+        <i class="fa fa-cog"></i> Configure
+      </button>
+    </div>
+  </div>
+
+  <!-- External Events -->
+  <div class="tab-panel" id="sys-events">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-broadcast-tower"></i></div>
+      <h3>External Events (Kafka / Webhooks)</h3>
+      <p>Configure event streaming to external systems via Kafka or webhooks.</p>
+    </div>
+  </div>
+
+  <!-- Manage Jobs -->
+  <div class="tab-panel" id="sys-jobs">
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Job Name</th><th>Next Run</th><th>Schedule</th><th>Active</th><th></th></tr></thead>
+          <tbody id="jobsBody">
+            <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading scheduled jobs…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Hooks -->
+  <div class="tab-panel" id="sys-hooks">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Hooks','New hook form coming soon')">
+        <i class="fa fa-plus"></i> New Hook
+      </button>
+    </div>
+    <div class="empty-state" style="padding:30px">
+      <div class="empty-state-icon"><i class="fa fa-anchor"></i></div>
+      <h3>No Hooks Configured</h3>
+      <p>Hooks trigger on Fineract events such as loan creation or client activation.</p>
+    </div>
+  </div>
+
+  <!-- Entity Mapping -->
+  <div class="tab-panel" id="sys-entitymap">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-exchange-alt"></i></div>
+      <h3>Entity-to-Entity Mapping</h3>
+      <p>Link entities such as offices to groups, or surveys to clients.</p>
+    </div>
+  </div>
+
+  <!-- System Info -->
+  <div class="tab-panel" id="sys-info">
+    <div class="card" style="max-width:600px">
+      <div class="card-header"><div class="card-title">System Information</div></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">Platform</div>         <div class="info-value">Apache Fineract</div></div>
+          <div class="info-item"><div class="info-label">Version</div>          <div class="info-value mono" id="sysVersion">—</div></div>
+          <div class="info-item"><div class="info-label">Server URL</div>       <div class="info-value mono" id="sysUrl">—</div></div>
+          <div class="info-item"><div class="info-label">Tenant</div>           <div class="info-value mono" id="sysTenant">—</div></div>
+          <div class="info-item"><div class="info-label">Build Date</div>       <div class="info-value mono" id="sysBuildDate">—</div></div>
+          <div class="info-item"><div class="info-label">API Version</div>      <div class="info-value mono">v1</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-system -->
+
+<!-- =====================================================
+     PAGE: USERS & ROLES
+===================================================== -->
+<div class="page" id="page-users">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Users &amp; Roles</div>
+      <div class="page-subtitle">Manage system users and their access permissions</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('User','New user form coming soon')">
+        <i class="fa fa-plus"></i> New User
+      </button>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">System Users</div></div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Username</th><th>Name</th><th>Office</th><th>Status</th><th></th></tr></thead>
+          <tbody id="usersBody">
+            <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Roles</div></div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Role</th><th>Description</th><th></th></tr></thead>
+          <tbody id="rolesBody2">
+            <tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: TEMPLATES
+===================================================== -->
+<div class="page" id="page-templates">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Templates</div>
+      <div class="page-subtitle">Email and document templates for automated communications</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Template','Template editor coming soon')">
+        <i class="fa fa-plus"></i> New Template
+      </button>
+    </div>
+  </div>
+  <div class="empty-state">
+    <div class="empty-state-icon"><i class="fa fa-file-code"></i></div>
+    <h3>No Templates</h3>
+    <p>Create email and document templates for use across the platform.</p>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: SELF SERVICE
+===================================================== -->
+<div class="page" id="page-self-service">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Self Service</div>
+      <div class="page-subtitle">Client-facing portal user management</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('selfServiceUserModal')">
+        <i class="fa fa-plus"></i> New Self Service User
+      </button>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Self Service Users</div></div>
+      <div class="empty-state" style="padding:30px">
+        <div class="empty-state-icon"><i class="fa fa-mobile-alt"></i></div>
+        <h3>No Self Service Users</h3>
+        <p>Register clients for online self-service access.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Beneficiaries</div></div>
+      <div class="empty-state" style="padding:30px">
+        <div class="empty-state-icon"><i class="fa fa-handshake"></i></div>
+        <h3>No Beneficiaries</h3>
+        <p>Client-registered transfer beneficiaries will appear here.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: ANALYTICS
+===================================================== -->
+<div class="page" id="page-analytics">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Analytics</div>
+      <div class="page-subtitle">Portfolio performance, disbursement trends and officer metrics</div>
+    </div>
+    <div class="page-actions">
+      <select class="form-control" style="width:auto">
+        <option>All Offices</option>
+      </select>
+      <select class="form-control" style="width:auto">
+        <option>This Year</option>
+        <option>Last 6 Months</option>
+        <option>Last 3 Months</option>
+        <option>This Month</option>
+      </select>
+      <button class="btn btn-secondary btn-sm" onclick="Toast.info('Export','Exporting analytics report…')">
+        <i class="fa fa-download"></i> Export PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid-4 mb-4">
+    <div class="stat-card c-teal">
+      <div class="stat-icon"><i class="fa fa-chart-line"></i></div>
+      <div class="stat-value" id="anlPortfolio">—</div>
+      <div class="stat-label">Portfolio Size</div>
+    </div>
+    <div class="stat-card c-amber">
+      <div class="stat-icon"><i class="fa fa-percentage"></i></div>
+      <div class="stat-value" id="anlPAR30">—</div>
+      <div class="stat-label">PAR 30</div>
+    </div>
+    <div class="stat-card c-green">
+      <div class="stat-icon"><i class="fa fa-arrow-up"></i></div>
+      <div class="stat-value" id="anlRepayRate">—</div>
+      <div class="stat-label">Repayment Rate</div>
+    </div>
+    <div class="stat-card c-blue">
+      <div class="stat-icon"><i class="fa fa-users"></i></div>
+      <div class="stat-value" id="anlBorrowers">—</div>
+      <div class="stat-label">Active Borrowers</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid-2 mb-4">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Disbursements — Monthly</div></div>
+      <div class="card-body">
+        <div class="chart-bars" id="anlDisb" style="height:88px"></div>
+        <div class="flex justify-between mt-2 fz-10 text-muted">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+          <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Repayments — Monthly</div></div>
+      <div class="card-body">
+        <div class="chart-bars" id="anlRepay" style="height:88px"></div>
+        <div class="flex justify-between mt-2 fz-10 text-muted">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+          <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Officer Performance -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">Loan Officer Performance</div></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Officer</th><th>Clients</th><th>Active Loans</th>
+            <th>Portfolio</th><th>PAR30</th><th>Collection Rate</th>
+          </tr>
+        </thead>
+        <tbody id="officerBody">
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading officer data…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: NAVIGATION TREE
+===================================================== -->
+<div class="page" id="page-navigation">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Navigation</div>
+      <div class="page-subtitle">Drill down: Office → Staff → Center → Group → Client</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Pages.NavTree.load()">
+        <i class="fa fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+  </div>
+  <div id="navTree" style="max-width:640px">
+    <div style="text-align:center;padding:40px;color:var(--text-muted)">
+      <i class="fa fa-spinner fa-spin"></i> Loading navigation tree…
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: SEARCH
+===================================================== -->
+<div class="page" id="page-search">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Search</div>
+      <div class="page-subtitle">Search across clients, loans, groups and savings accounts</div>
+    </div>
+  </div>
+  <div class="filter-bar mb-4">
+    <div class="search-bar" style="flex:1;max-width:480px">
+      <i class="fa fa-search"></i>
+      <input id="searchPageInput" type="text"
+             placeholder="Type to search clients, loans, groups…"
+             oninput="Pages.Search.run(this.value)"
+             autofocus/>
+    </div>
+    <select class="form-control" style="width:auto">
+      <option>All Types</option>
+      <option>Clients</option>
+      <option>Loans</option>
+      <option>Groups</option>
+      <option>Savings</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Name / ID</th><th>Account</th><th>Type / Product</th><th>Status</th></tr></thead>
+        <tbody id="searchBody">
+          <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted)">
+            Start typing to search across all entities…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: NOTIFICATIONS
+===================================================== -->
+<div class="page" id="page-notifications">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Notifications</div>
+      <div class="page-subtitle">System alerts, reminders and activity feed</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm"
+              onclick="Toast.info('Marked','All notifications marked as read')">
+        Mark All Read
+      </button>
+    </div>
+  </div>
+  <div class="card" id="notifContainer">
+    <div style="text-align:center;padding:40px;color:var(--text-muted)">
+      <i class="fa fa-spinner fa-spin"></i> Loading notifications…
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: PROFILE
+===================================================== -->
+<div class="page" id="page-profile">
+  <div class="page-header">
+    <div>
+      <div class="page-title">My Profile</div>
+      <div class="page-subtitle">Manage your account, password and security settings</div>
+    </div>
+  </div>
+  <div class="grid-2">
+
+    <!-- Account Details -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Account Details</div></div>
+      <div class="card-body">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="avatar av-lg" id="profAvatar">M</div>
+          <div>
+            <div class="fw-700" id="profName">—</div>
+            <div class="fz-12 text-muted">System Administrator</div>
+          </div>
+        </div>
+        <div class="form-grid fg-2">
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <input class="form-control" id="profUser" value="—"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" id="profEmail" placeholder="admin@fineract.org"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input class="form-control" id="profFirst"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input class="form-control" id="profLast"/>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-4" onclick="Pages.Profile.saveProfile()">
+          <i class="fa fa-save"></i> Save Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- Change Password -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Change Password</div></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Current Password <span style="color:var(--red-400)">*</span></label>
+            <input class="form-control" type="password" id="pwCurrent" autocomplete="current-password"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password <span style="color:var(--red-400)">*</span></label>
+            <input class="form-control" type="password" id="pwNew" autocomplete="new-password"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm New Password <span style="color:var(--red-400)">*</span></label>
+            <input class="form-control" type="password" id="pwConfirm" autocomplete="new-password"/>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-4" onclick="Pages.Profile.changePassword()">
+          <i class="fa fa-lock"></i> Update Password
+        </button>
+      </div>
+    </div>
+
+    <!-- Two-Factor Auth -->
+    <div class="card">
+      <div class="card-header"><div class="card-title"><i class="fa fa-shield-alt text-teal" style="margin-right:6px"></i>Two-Factor Authentication</div></div>
+      <div class="card-body">
+        <div class="flex items-center gap-4">
+          <div style="flex:1">
+            <div class="fw-600">Authenticator App (TOTP)</div>
+            <div class="fz-12 text-muted mt-1">
+              Use Google Authenticator, Authy or any TOTP app to generate time-based codes.
+            </div>
+          </div>
+          <span class="badge b-closed" id="twoFaStatus">Disabled</span>
+          <button class="btn btn-primary btn-sm" onclick="Modal.open('twoFactorModal')">
+            <i class="fa fa-lock"></i> Enable 2FA
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Sessions -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Active Session</div></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">Server</div>     <div class="info-value mono fz-12" id="sessServer">—</div></div>
+          <div class="info-item"><div class="info-label">Tenant</div>     <div class="info-value mono" id="sessTenant">—</div></div>
+          <div class="info-item"><div class="info-label">Username</div>   <div class="info-value mono" id="sessUser">—</div></div>
+          <div class="info-item"><div class="info-label">Authenticated</div><div class="info-value"><span class="badge b-active">Yes</span></div></div>
+        </div>
+        <button class="btn btn-danger btn-sm mt-4" onclick="App.logout()">
+          <i class="fa fa-sign-out-alt"></i> Sign Out
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: SETTINGS
+===================================================== -->
+<div class="page" id="page-settings">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Settings</div>
+      <div class="page-subtitle">Connection, appearance and keyboard shortcuts</div>
+    </div>
+  </div>
+  <div class="grid-2">
+
+    <!-- Connection -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Connection</div></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Server URL</label>
+            <input class="form-control" id="setUrl" placeholder="https://demo.mifos.community"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tenant ID</label>
+            <input class="form-control" id="setTenant" placeholder="default"/>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-4" onclick="App.saveSettings()">
+          <i class="fa fa-save"></i> Save Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Appearance</div></div>
+      <div class="card-body">
+        <div class="form-group mb-3">
+          <label class="form-label">Theme</label>
+          <select class="form-control" onchange="App.setTheme(this.value)">
+            <option value="dark">Dark Mode</option>
+            <option value="light">Light Mode</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Language</label>
+          <select class="form-control">
+            <option>English</option>
+            <option>Français</option>
+            <option>Español</option>
+            <option>Português</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keyboard Shortcuts -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Keyboard Shortcuts</div></div>
+      <div class="card-body">
+        <table class="tbl">
+          <tbody>
+            <tr>
+              <td>Command Palette</td>
+              <td class="text-right"><kbd style="background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;font-family:var(--font-mono)">Ctrl + K</kbd></td>
+            </tr>
+            <tr>
+              <td>Close / Dismiss</td>
+              <td class="text-right"><kbd style="background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;font-family:var(--font-mono)">ESC</kbd></td>
+            </tr>
+            <tr>
+              <td>New Client</td>
+              <td class="text-right"><kbd style="background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;font-family:var(--font-mono)">Ctrl + Shift + N</kbd></td>
+            </tr>
+            <tr>
+              <td>New Loan</td>
+              <td class="text-right"><kbd style="background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;font-family:var(--font-mono)">Ctrl + Shift + L</kbd></td>
+            </tr>
+            <tr>
+              <td>Make Repayment</td>
+              <td class="text-right"><kbd style="background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;font-family:var(--font-mono)">Ctrl + Shift + R</kbd></td>
+            </tr>
+            <tr>
+              <td>Shortcut Help</td>
+              <td class="text-right"><kbd style="background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px;font-family:var(--font-mono)">?</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">About FinCraft</div></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">App Name</div>    <div class="info-value">FinCraft</div></div>
+          <div class="info-item"><div class="info-label">Version</div>     <div class="info-value mono">2.0.0</div></div>
+          <div class="info-item"><div class="info-label">Backend</div>     <div class="info-value">Apache Fineract</div></div>
+          <div class="info-item"><div class="info-label">Architecture</div><div class="info-value">Modular HTML + Vanilla JS</div></div>
+        </div>
+        <div class="separator"></div>
+        <div class="fz-12 text-muted">
+          FinCraft combines features from the Mifos Community App, Web App and
+          Field Officer App into one unified interface — connected live to your
+          Fineract server with zero build tools required.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

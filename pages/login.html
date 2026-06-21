@@ -1,0 +1,130 @@
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+<div class="login-wrap active" id="loginWrap">
+  <div style="display:flex;width:100%;height:100vh">
+
+    <!-- Left branding panel -->
+    <div class="login-left">
+      <div class="login-brand">
+        <div class="login-logo-row">
+          <div class="login-logo">F</div>
+          <div>
+            <div class="login-app-name">Fin<em>Craft</em></div>
+            <div style="font-size:10px;color:var(--teal-500);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:2px">
+              Fineract Platform
+            </div>
+          </div>
+        </div>
+        <div class="login-tagline">
+          A unified microfinance platform — combining every feature of the
+          Community App, Web App and Field Officer App into one beautifully
+          crafted interface, connected to a live Apache Fineract server.
+        </div>
+        <div class="login-features">
+          <div class="login-feature">
+            <div class="login-feature-icon"><i class="fa fa-users"></i></div>
+            <div class="login-feature-text">
+              <strong>Full Client Lifecycle</strong>
+              Create, manage and track every client
+            </div>
+          </div>
+          <div class="login-feature">
+            <div class="login-feature-icon"><i class="fa fa-money-bill-wave"></i></div>
+            <div class="login-feature-text">
+              <strong>Complete Loan Engine</strong>
+              35+ actions, GLIM, progressive loans
+            </div>
+          </div>
+          <div class="login-feature">
+            <div class="login-feature-icon"><i class="fa fa-calculator"></i></div>
+            <div class="login-feature-text">
+              <strong>Full Accounting GL</strong>
+              COA, journal entries, closures
+            </div>
+          </div>
+          <div class="login-feature">
+            <div class="login-feature-icon"><i class="fa fa-chart-bar"></i></div>
+            <div class="login-feature-text">
+              <strong>25+ Live Reports</strong>
+              PAR, trial balance, MIX, ad hoc
+            </div>
+          </div>
+          <div class="login-feature">
+            <div class="login-feature-icon"><i class="fa fa-terminal"></i></div>
+            <div class="login-feature-text">
+              <strong>Command Palette</strong>
+              Jump anywhere instantly with Ctrl+K
+            </div>
+          </div>
+          <div class="login-feature">
+            <div class="login-feature-icon"><i class="fa fa-plug"></i></div>
+            <div class="login-feature-text">
+              <strong>Live Fineract API</strong>
+              Auto-connects to demo server
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right login form -->
+    <div class="login-right">
+      <div class="login-form-box">
+        <div class="login-form-title">Welcome back</div>
+        <div class="login-form-sub">Sign in to your FinCraft account</div>
+
+        <div class="form-group mb-3">
+          <label class="form-label">Server URL</label>
+          <input class="form-control" id="loginUrl" type="text"
+                 value="https://demo.mifos.community"
+                 placeholder="https://your-fineract-server.com"/>
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Tenant ID</label>
+          <input class="form-control" id="loginTenant" type="text" value="default"/>
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Username</label>
+          <input class="form-control" id="loginUser" type="text"
+                 value="mifos" autocomplete="username"/>
+        </div>
+        <div class="form-group mb-4">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <input class="form-control" id="loginPass" type="password"
+                   value="password" autocomplete="current-password"
+                   style="border-radius:var(--radius-sm) 0 0 var(--radius-sm)"
+                   onkeydown="if(event.key==='Enter')App.login(document.getElementById('loginUrl').value,document.getElementById('loginTenant').value,document.getElementById('loginUser').value,this.value)"/>
+            <button class="btn btn-secondary"
+                    style="border-radius:0 var(--radius-sm) var(--radius-sm) 0;border-left:none"
+                    onclick="const p=document.getElementById('loginPass');p.type=p.type==='password'?'text':'password'">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full"
+                onclick="App.login(document.getElementById('loginUrl').value,document.getElementById('loginTenant').value,document.getElementById('loginUser').value,document.getElementById('loginPass').value)">
+          <i class="fa fa-sign-in-alt"></i> Sign In
+        </button>
+
+        <div class="login-divider">OR</div>
+
+        <button class="btn btn-secondary btn-full"
+                onclick="App.login(FC_CONFIG.DEMO_SERVER_URL,FC_CONFIG.DEMO_TENANT,FC_CONFIG.DEMO_USERNAME,FC_CONFIG.DEMO_PASSWORD)">
+          <i class="fa fa-flask"></i> Connect to Demo Server
+        </button>
+
+        <div class="login-footer">
+          Built on
+          <a class="link" href="https://fineract.apache.org" target="_blank" rel="noopener">
+            Apache Fineract
+          </a>
+          — Open Source MFI Platform
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,234 @@
+<!-- =====================================================
+     PAGE: ACCOUNTING
+===================================================== -->
+<div class="page" id="page-accounting">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Accounting</div>
+      <div class="page-subtitle">General ledger, journal entries, closures and accruals</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('journalEntryModal')">
+        <i class="fa fa-plus"></i> Journal Entry
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'acc-coa');Pages.Accounting.loadCOA()">Chart of Accounts</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-je');Pages.Accounting.loadJournalEntries()">Journal Entries</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-rules')">Accounting Rules</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-closure')">GL Closure</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-accruals')">Periodic Accruals</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-provision')">Provisioning</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-finact')">Financial Activities</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-frequent')">Frequent Postings</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-search')">Search Entries</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'acc-migrate')">Migrate Balances</button>
+  </div>
+
+  <!-- Chart of Accounts -->
+  <div class="tab-panel active" id="acc-coa">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('glAccountModal')"><i class="fa fa-plus"></i> Add GL Account</button>
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-download"></i> Export COA</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>GL Code</th><th>Account Name</th><th>Type</th><th class="text-right">Balance</th></tr></thead>
+          <tbody id="glBody">
+            <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading chart of accounts…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journal Entries -->
+  <div class="tab-panel" id="acc-je">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('journalEntryModal')"><i class="fa fa-plus"></i> New Journal Entry</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Account</th><th>Office</th><th>Transaction ID</th><th>Created By</th></tr></thead>
+          <tbody id="jeBody">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading journal entries…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accounting Rules -->
+  <div class="tab-panel" id="acc-rules">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Rules','Add accounting rule form coming soon')"><i class="fa fa-plus"></i> Add Rule</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Rule Name</th><th>Debit Account</th><th>Credit Account</th><th>Tags</th><th></th></tr></thead>
+          <tbody id="accRulesBody">
+            <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading accounting rules…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- GL Closure -->
+  <div class="tab-panel" id="acc-closure">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm"
+              onclick="Toast.info('GL Closure','Enter closing date and office, then confirm')">
+        <i class="fa fa-lock"></i> Create GL Closure
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Closing Date</th><th>Office</th><th>Comments</th><th>Closed By</th><th>Closed On</th></tr></thead>
+          <tbody id="glClosureBody">
+            <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading closures…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Periodic Accruals -->
+  <div class="tab-panel" id="acc-accruals">
+    <div class="card card-body" style="max-width:500px">
+      <div class="fw-700 mb-2">Run Periodic Accruals</div>
+      <div class="fz-12 text-secondary mb-4">
+        Calculate and post accrued interest for all active loan accounts up to the specified date.
+      </div>
+      <div class="form-group mb-3">
+        <label class="form-label">Till Date <span style="color:var(--red-400)">*</span></label>
+        <input class="form-control" type="date" id="accrualTillDate"
+               style="max-width:200px"/>
+      </div>
+      <button class="btn btn-primary"
+              onclick="API.Accounting.runPeriodicAccrual({tillDate:document.getElementById('accrualTillDate').value,locale:'en',dateFormat:'yyyy-MM-dd'}).then(()=>Toast.success('Accruals','Periodic accrual job triggered')).catch(e=>Toast.error('Failed',e.message))">
+        <i class="fa fa-play"></i> Run Periodic Accruals
+      </button>
+    </div>
+  </div>
+
+  <!-- Provisioning -->
+  <div class="tab-panel" id="acc-provision">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-exclamation-triangle"></i></div>
+      <h3>Provisioning Entries</h3>
+      <p>Create credit-loss provisioning entries for delinquent loans.</p>
+      <button class="btn btn-primary mt-3"
+              onclick="Toast.info('Provisioning','Provisioning entry form coming soon')">
+        <i class="fa fa-plus"></i> Create Provisioning Entry
+      </button>
+    </div>
+  </div>
+
+  <!-- Financial Activities -->
+  <div class="tab-panel" id="acc-finact">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm"
+              onclick="Toast.info('Financial Activities','Map a financial activity to a GL account')">
+        <i class="fa fa-plus"></i> New Mapping
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Financial Activity</th><th>GL Account</th><th></th></tr></thead>
+          <tbody id="finActBody">
+            <tr><td colspan="3" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading financial activities…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Frequent Postings -->
+  <div class="tab-panel" id="acc-frequent">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add Frequent Posting</button>
+    </div>
+    <div class="empty-state" style="padding:30px">
+      <div class="empty-state-icon"><i class="fa fa-bookmark"></i></div>
+      <h3>No Frequent Postings</h3>
+      <p>Save common journal entry templates for quick access.</p>
+    </div>
+  </div>
+
+  <!-- Search Entries -->
+  <div class="tab-panel" id="acc-search">
+    <div class="filter-bar mb-3">
+      <div class="form-group" style="flex:0 0 auto">
+        <label class="form-label">From Date</label>
+        <input class="form-control" type="date" id="jeSearchFrom" style="width:160px"/>
+      </div>
+      <div class="form-group" style="flex:0 0 auto">
+        <label class="form-label">To Date</label>
+        <input class="form-control" type="date" id="jeSearchTo" style="width:160px"/>
+      </div>
+      <div class="form-group" style="flex:0 0 auto">
+        <label class="form-label">Office</label>
+        <select class="form-control" id="jeSearchOffice" style="width:auto">
+          <option value="">All Offices</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:0 0 auto">
+        <label class="form-label">Type</label>
+        <select class="form-control" style="width:auto" id="jeSearchType">
+          <option value="">All Types</option>
+          <option value="DEBIT">Debit</option>
+          <option value="CREDIT">Credit</option>
+        </select>
+      </div>
+      <div style="align-self:flex-end">
+        <button class="btn btn-primary btn-sm"
+                onclick="Pages.Accounting.loadJournalEntries({fromDate:document.getElementById('jeSearchFrom').value,toDate:document.getElementById('jeSearchTo').value})">
+          <i class="fa fa-search"></i> Search
+        </button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Account</th><th>Office</th><th>Reference</th><th>By</th></tr></thead>
+          <tbody id="jeSearchBody">
+            <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-muted)">
+              Set filters and click Search to find journal entries.
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Migrate Balances -->
+  <div class="tab-panel" id="acc-migrate">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-database"></i></div>
+      <h3>Migrate Opening Balances</h3>
+      <p>Import opening GL balances from your previous accounting system.</p>
+      <button class="btn btn-primary mt-3" onclick="Modal.open('bulkImportModal')">
+        <i class="fa fa-file-import"></i> Import Balances
+      </button>
+    </div>
+  </div>
+
+</div><!-- /page-accounting -->

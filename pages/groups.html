@@ -1,0 +1,200 @@
+<!-- =====================================================
+     PAGE: GROUPS
+===================================================== -->
+<div class="page" id="page-groups">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Groups</div>
+      <div class="page-subtitle">JLG and savings group management</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Modal.open('bulkImportModal')">
+        <i class="fa fa-file-import"></i> Import
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newGroupModal')">
+        <i class="fa fa-plus"></i> New Group
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-bar" style="flex:1;max-width:280px">
+      <i class="fa fa-search"></i>
+      <input type="text" placeholder="Search by group name…"
+             oninput="Pages.Groups.filter(this.value)"/>
+    </div>
+    <select class="form-control" style="width:auto">
+      <option value="">All Status</option>
+      <option>Active</option><option>Pending</option><option>Closed</option>
+    </select>
+    <select class="form-control" style="width:auto" id="groupOfficeFilter">
+      <option value="">All Offices</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Name</th><th>Account No.</th><th>Office</th>
+            <th>Staff</th><th>Members</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="groupsBody">
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading groups…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-pagination">
+      <div class="fz-12 text-muted">Showing groups</div>
+      <div id="groupPagination" class="flex gap-1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: CENTERS
+===================================================== -->
+<div class="page" id="page-centers">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Centers</div>
+      <div class="page-subtitle">Top-level hierarchy unit above groups</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newCenterModal')">
+        <i class="fa fa-plus"></i> New Center
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Name</th><th>Office</th><th>Staff</th><th>Groups</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="centersBody">
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading centers…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: COLLECTIONS
+===================================================== -->
+<div class="page" id="page-collections">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Collections</div>
+      <div class="page-subtitle">Daily repayment collection sheet</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Pages.Collections.loadSheet()">
+        <i class="fa fa-calendar-day"></i> Load Today's Sheet
+      </button>
+    </div>
+  </div>
+
+  <!-- Sheet filters -->
+  <div class="filter-bar">
+    <select class="form-control" style="width:auto" id="collOffice">
+      <option value="1">Head Office</option>
+    </select>
+    <select class="form-control" style="width:auto" id="collStaff">
+      <option value="">All Staff</option>
+    </select>
+    <input class="form-control" type="date" style="width:auto" id="collDate"/>
+    <button class="btn btn-secondary btn-sm" onclick="Pages.Collections.loadSheet()">
+      <i class="fa fa-search"></i> Load Sheet
+    </button>
+  </div>
+
+  <!-- Dynamic content injected by Pages.Collections.loadSheet() -->
+  <div id="collContainer">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-hand-holding-usd"></i></div>
+      <h3>No Collection Sheet Loaded</h3>
+      <p>Select office, staff and date then click Load Sheet.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: TRANSFERS
+===================================================== -->
+<div class="page" id="page-transfers">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Account Transfers</div>
+      <div class="page-subtitle">Transfer funds between savings and loan accounts</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newTransferModal')">
+        <i class="fa fa-plus"></i> New Transfer
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Date</th><th>From Account</th><th>To Account</th>
+            <th>Amount</th><th>Description</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="transfersBody">
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading transfers…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: REMITTANCES
+===================================================== -->
+<div class="page" id="page-remittances">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Remittances</div>
+      <div class="page-subtitle">Send and track remittance transfers</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('remittanceModal')">
+        <i class="fa fa-plus"></i> New Remittance
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Reference</th><th>Sender</th><th>Beneficiary</th>
+            <th>Amount</th><th>Mode</th><th>Date</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="remittancesBody">
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading remittances…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

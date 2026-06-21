@@ -1,0 +1,164 @@
+<!-- =====================================================
+     PAGE: DASHBOARD
+===================================================== -->
+<div class="page active" id="page-dashboard">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Dashboard</div>
+      <div class="page-subtitle" id="dashDate"></div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Dashboard.load()">
+        <i class="fa fa-sync-alt"></i> Refresh
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('quickModal')">
+        <i class="fa fa-plus"></i> Quick Action
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid-4 mb-4">
+    <div class="stat-card c-teal">
+      <div class="stat-icon"><i class="fa fa-users"></i></div>
+      <div class="stat-value" id="stClients"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Active Clients</div>
+    </div>
+    <div class="stat-card c-amber">
+      <div class="stat-icon"><i class="fa fa-money-bill-wave"></i></div>
+      <div class="stat-value" id="stLoans"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Active Loans</div>
+    </div>
+    <div class="stat-card c-green">
+      <div class="stat-icon"><i class="fa fa-piggy-bank"></i></div>
+      <div class="stat-value" id="stSavings"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Savings Accounts</div>
+    </div>
+    <div class="stat-card c-red">
+      <div class="stat-icon"><i class="fa fa-exclamation-triangle"></i></div>
+      <div class="stat-value" id="stPAR"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Overdue (PAR30+)</div>
+    </div>
+  </div>
+
+  <!-- Charts + Pending Tasks -->
+  <div class="grid-2 mb-4">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa fa-chart-line text-teal" style="margin-right:6px"></i>
+          Loan Portfolio — Monthly
+        </div>
+        <div class="flex gap-1">
+          <button class="btn btn-ghost btn-xs">6M</button>
+          <button class="btn btn-secondary btn-xs">1Y</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-bars" id="loanChart" style="height:88px"></div>
+        <div class="flex justify-between mt-2 fz-10 text-muted">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+          <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa fa-tasks text-amber" style="margin-right:6px"></i>
+          Pending Tasks
+        </div>
+        <button class="btn btn-ghost btn-xs" onclick="Router.navigate('tasks')">
+          View All →
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>Task</th><th>Entity</th><th>Maker</th><th></th></tr>
+          </thead>
+          <tbody id="dashTasksBody">
+            <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent Clients + Portfolio Health -->
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa fa-user-plus text-teal" style="margin-right:6px"></i>
+          Recent Clients
+        </div>
+        <button class="btn btn-ghost btn-xs" onclick="Router.navigate('clients')">
+          View All →
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Office</th><th>Status</th></tr></thead>
+          <tbody id="recentClientsBody">
+            <tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fa fa-heartbeat text-green" style="margin-right:6px"></i>
+          Portfolio Health
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="flex justify-between mb-2">
+            <span class="fz-12">Repayment Rate</span>
+            <span class="fz-12 fw-600 text-green" id="phRepayRate">—</span>
+          </div>
+          <div class="progress"><div class="progress-bar pb-teal" id="phRepayBar" style="width:0%"></div></div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between mb-2">
+            <span class="fz-12">PAR 30</span>
+            <span class="fz-12 fw-600 text-amber" id="phPAR30">—</span>
+          </div>
+          <div class="progress"><div class="progress-bar pb-amber" id="phPAR30Bar" style="width:0%"></div></div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between mb-2">
+            <span class="fz-12">Collection Efficiency</span>
+            <span class="fz-12 fw-600 text-teal" id="phCollEff">—</span>
+          </div>
+          <div class="progress"><div class="progress-bar pb-teal" id="phCollBar" style="width:0%"></div></div>
+        </div>
+        <div class="separator"></div>
+        <div class="grid-2" style="gap:12px">
+          <div class="text-center">
+            <div class="mono fw-600 fz-16 text-teal" id="phActiveLoans">—</div>
+            <div class="fz-12 text-muted">Active Loans</div>
+          </div>
+          <div class="text-center">
+            <div class="mono fw-600 fz-16 text-amber" id="phOutstanding">—</div>
+            <div class="fz-12 text-muted">Outstanding</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

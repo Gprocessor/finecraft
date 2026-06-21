@@ -1,0 +1,313 @@
+<!-- =====================================================
+     PAGE: LOANS LIST
+===================================================== -->
+<div class="page" id="page-loans">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Loan Accounts</div>
+      <div class="page-subtitle">Track all disbursements, repayments and overdue accounts</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Modal.open('bulkImportModal')">
+        <i class="fa fa-file-import"></i> Import
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newLoanModal')">
+        <i class="fa fa-plus"></i> New Loan
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI row -->
+  <div class="grid-4 mb-4">
+    <div class="stat-card c-teal">
+      <div class="stat-icon"><i class="fa fa-check-circle"></i></div>
+      <div class="stat-value" id="loanKpiActive"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Active Loans</div>
+    </div>
+    <div class="stat-card c-amber">
+      <div class="stat-icon"><i class="fa fa-clock"></i></div>
+      <div class="stat-value" id="loanKpiPending"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Pending Approval</div>
+    </div>
+    <div class="stat-card c-red">
+      <div class="stat-icon"><i class="fa fa-exclamation-circle"></i></div>
+      <div class="stat-value" id="loanKpiOverdue"><i class="fa fa-spinner fa-spin"></i></div>
+      <div class="stat-label">Overdue (PAR30+)</div>
+    </div>
+    <div class="stat-card c-green">
+      <div class="stat-icon"><i class="fa fa-dollar-sign"></i></div>
+      <div class="stat-value" id="loanKpiPortfolio">—</div>
+      <div class="stat-label">Outstanding Portfolio</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <div class="search-bar" style="flex:1;max-width:280px">
+      <i class="fa fa-search"></i>
+      <input type="text" placeholder="Search by client or account no…"
+             oninput="Pages.Loans.filter(this.value, document.getElementById('loanStatusFilter').value)"/>
+    </div>
+    <select class="form-control" id="loanStatusFilter" style="width:auto"
+            onchange="Pages.Loans.filter('', this.value)">
+      <option value="">All Status</option>
+      <option value="active">Active</option>
+      <option value="submitted and pending approval">Pending Approval</option>
+      <option value="approved">Approved</option>
+      <option value="overpaid">Overpaid</option>
+      <option value="closed">Closed</option>
+      <option value="written off">Written Off</option>
+      <option value="overdue">Overdue</option>
+    </select>
+    <select class="form-control" id="loanProductFilter" style="width:auto">
+      <option value="">All Products</option>
+    </select>
+    <select class="form-control" id="loanOfficerFilter" style="width:auto">
+      <option value="">All Officers</option>
+    </select>
+    <button class="btn btn-secondary btn-sm ml-auto">
+      <i class="fa fa-download"></i> Export
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Loan ID</th>
+            <th>Client</th>
+            <th>Product</th>
+            <th>Principal</th>
+            <th>Outstanding</th>
+            <th>Next Due</th>
+            <th>Status</th>
+            <th>Officer</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="loansBody">
+          <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading loans…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-pagination">
+      <div class="fz-12 text-muted">Showing loans</div>
+      <div id="loanPagination" class="flex gap-1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: LOAN DETAIL
+===================================================== -->
+<div class="page" id="page-loan-detail">
+
+  <!-- Back -->
+  <div class="flex items-center gap-2 mb-4">
+    <button class="btn btn-ghost btn-sm" onclick="Router.navigate('loans')">
+      <i class="fa fa-arrow-left"></i> Loans
+    </button>
+    <i class="fa fa-chevron-right fz-10 text-muted"></i>
+    <span class="fw-600 text-secondary" id="ldTitle">Loan Detail</span>
+  </div>
+
+  <!-- Hero metrics -->
+  <div class="card mb-0" style="border-radius:var(--radius-lg) var(--radius-lg) 0 0;border-bottom:none">
+    <div style="background:linear-gradient(135deg,var(--navy-800),var(--navy-900));padding:16px 22px;border-radius:var(--radius-lg) var(--radius-lg) 0 0">
+      <div class="fz-12 text-muted mb-1" id="ldSubtitle">—</div>
+      <div class="hero-metrics" style="background:none;padding:0;border:none;margin-top:12px">
+        <div class="hero-metric"><div class="hero-metric-val" id="ldPrincipal">—</div><div class="hero-metric-lbl">Principal</div></div>
+        <div class="hero-metric"><div class="hero-metric-val amber" id="ldOutstanding">—</div><div class="hero-metric-lbl">Outstanding</div></div>
+        <div class="hero-metric"><div class="hero-metric-val teal" id="ldRate">—</div><div class="hero-metric-lbl">Interest Rate</div></div>
+        <div class="hero-metric"><div class="hero-metric-val" id="ldEMI">—</div><div class="hero-metric-lbl">EMI</div></div>
+        <div class="hero-metric"><div class="hero-metric-val" id="ldMaturity">—</div><div class="hero-metric-lbl">Maturity</div></div>
+        <div class="hero-metric"><div class="hero-metric-val teal" id="ldStatus">—</div><div class="hero-metric-lbl">Status</div></div>
+      </div>
+    </div>
+
+    <!-- Action strip -->
+    <div class="action-strip">
+      <button class="btn btn-primary btn-sm"   onclick="Pages.Loans.openRepayment(Pages.LoanDetail._current?.id)"><i class="fa fa-hand-holding-usd"></i> Repayment</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'approve')"><i class="fa fa-check"></i> Approve</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'disburse')"><i class="fa fa-money-bill-wave"></i> Disburse</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'undoapproval')"><i class="fa fa-undo"></i> Undo Approval</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'undodisbursal')"><i class="fa fa-undo"></i> Undo Disbursal</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'waiveinterest')"><i class="fa fa-percentage"></i> Waive Interest</button>
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('rsLoanId').value=Pages.LoanDetail._current?.id;Modal.open('loanRescheduleModal')"><i class="fa fa-calendar-alt"></i> Reschedule</button>
+      <button class="btn btn-secondary btn-sm" onclick="Modal.open('interestPauseModal')"><i class="fa fa-pause-circle"></i> Interest Pause</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'reamortize')"><i class="fa fa-sync-alt"></i> Reamortize</button>
+      <button class="btn btn-secondary btn-sm" onclick="Modal.open('newCollateralModal')"><i class="fa fa-shield-alt"></i> Add Collateral</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.LoanDetail.loadCharges()"><i class="fa fa-receipt"></i> Charges</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'close')"><i class="fa fa-times-circle"></i> Close</button>
+      <button class="btn btn-amber btn-sm"     onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'foreclosure')"><i class="fa fa-bolt"></i> Foreclosure</button>
+      <button class="btn btn-danger btn-sm"    onclick="document.getElementById('woLoanId').value=Pages.LoanDetail._current?.id;Modal.open('loanWriteOffModal')"><i class="fa fa-pen-nib"></i> Write Off</button>
+      <button class="btn btn-danger btn-sm"    onclick="Pages.Loans.doAction(Pages.LoanDetail._current?.id,'charge-off')"><i class="fa fa-ban"></i> Charge Off</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="card" style="border-radius:0 0 var(--radius-lg) var(--radius-lg)">
+    <div style="padding:0 22px">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="Tabs.switch(this,'ld-general')">General</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-schedule')">Repayment Schedule</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-txns')">Transactions</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-charges');Pages.LoanDetail.loadCharges()">Charges</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-collateral');Pages.LoanDetail.loadCollateral()">Collateral</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-guarantors')">Guarantors</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-delinquency')">Delinquency</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-standing')">Standing Instructions</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-docs')">Documents</button>
+        <button class="tab-btn" onclick="Tabs.switch(this,'ld-notes');Pages.LoanDetail.loadNotes()">Notes</button>
+      </div>
+
+      <!-- General -->
+      <div class="tab-panel active" id="ld-general" style="padding-bottom:20px">
+        <div class="grid-2 gap-4">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Loan Details</div></div>
+            <div class="card-body">
+              <div class="info-grid">
+                <div class="info-item"><div class="info-label">Loan Officer</div>    <div class="info-value" id="ldLoanOfficer">—</div></div>
+                <div class="info-item"><div class="info-label">Fund</div>            <div class="info-value" id="ldFund">—</div></div>
+                <div class="info-item"><div class="info-label">Disbursed On</div>    <div class="info-value" id="ldDisburseDate">—</div></div>
+                <div class="info-item"><div class="info-label">Maturity Date</div>   <div class="info-value" id="ldMaturityDate">—</div></div>
+                <div class="info-item"><div class="info-label">Term</div>            <div class="info-value mono" id="ldTerm">—</div></div>
+                <div class="info-item"><div class="info-label">Frequency</div>       <div class="info-value" id="ldFrequency">—</div></div>
+                <div class="info-item"><div class="info-label">Interest Method</div> <div class="info-value" id="ldInterestMethod">—</div></div>
+                <div class="info-item"><div class="info-label">Amortization</div>    <div class="info-value" id="ldAmortization">—</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Financial Summary</div></div>
+            <div class="card-body">
+              <div class="info-grid">
+                <div class="info-item"><div class="info-label">Principal Disbursed</div>   <div class="info-value mono" id="ldPrincipalDisbursed">—</div></div>
+                <div class="info-item"><div class="info-label">Principal Paid</div>         <div class="info-value mono text-teal" id="ldPrincipalPaid">—</div></div>
+                <div class="info-item"><div class="info-label">Principal Outstanding</div>  <div class="info-value mono text-amber" id="ldPrincipalOutstanding">—</div></div>
+                <div class="info-item"><div class="info-label">Interest Charged</div>       <div class="info-value mono" id="ldInterestCharged">—</div></div>
+                <div class="info-item"><div class="info-label">Interest Paid</div>          <div class="info-value mono text-teal" id="ldInterestPaid">—</div></div>
+                <div class="info-item"><div class="info-label">Interest Outstanding</div>   <div class="info-value mono text-amber" id="ldInterestOutstanding">—</div></div>
+                <div class="info-item"><div class="info-label">Fees Charged</div>           <div class="info-value mono" id="ldFeesCharged">—</div></div>
+                <div class="info-item"><div class="info-label">Total Outstanding</div>      <div class="info-value mono fw-700 text-amber" id="ldTotalOutstanding">—</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repayment Schedule -->
+      <div class="tab-panel" id="ld-schedule" style="padding-bottom:20px">
+        <div class="card">
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>#</th><th>Due Date</th><th>Principal</th><th>Interest</th><th>Fees</th><th>Total Due</th><th>Paid</th><th>Status</th></tr></thead>
+              <tbody id="ldScheduleBody"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transactions -->
+      <div class="tab-panel" id="ld-txns" style="padding-bottom:20px">
+        <div class="card">
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Principal</th><th>Interest</th><th>Balance</th><th>By</th></tr></thead>
+              <tbody id="ldTxnBody"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charges -->
+      <div class="tab-panel" id="ld-charges" style="padding-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Loan Charges</div>
+            <button class="btn btn-primary btn-sm" onclick="Modal.open('newChargeModal')"><i class="fa fa-plus"></i> Add Charge</button>
+          </div>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Charge</th><th>Calculation</th><th>Amount</th><th>Paid</th><th>Status</th></tr></thead>
+              <tbody id="ldChargesBody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collateral -->
+      <div class="tab-panel" id="ld-collateral" style="padding-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Collateral</div>
+            <button class="btn btn-primary btn-sm" onclick="Modal.open('newCollateralModal')"><i class="fa fa-plus"></i> Add Collateral</button>
+          </div>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Type</th><th>Value</th><th>Description</th><th></th></tr></thead>
+              <tbody id="ldCollateralBody"><tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guarantors -->
+      <div class="tab-panel" id="ld-guarantors" style="padding-bottom:20px">
+        <div class="empty-state">
+          <div class="empty-state-icon"><i class="fa fa-handshake"></i></div>
+          <h3>No Guarantors</h3>
+          <button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Create Guarantor</button>
+        </div>
+      </div>
+
+      <!-- Delinquency -->
+      <div class="tab-panel" id="ld-delinquency" style="padding-bottom:20px">
+        <div class="empty-state">
+          <div class="empty-state-icon" style="color:var(--green-400)"><i class="fa fa-check-circle"></i></div>
+          <h3>No Delinquency Tags</h3>
+          <p>This loan is current — no delinquency buckets applied.</p>
+        </div>
+      </div>
+
+      <!-- Standing Instructions -->
+      <div class="tab-panel" id="ld-standing" style="padding-bottom:20px">
+        <div class="empty-state">
+          <div class="empty-state-icon"><i class="fa fa-repeat"></i></div>
+          <h3>No Standing Instructions</h3>
+          <button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Instruction</button>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div class="tab-panel" id="ld-docs" style="padding-bottom:20px">
+        <div class="empty-state">
+          <div class="empty-state-icon"><i class="fa fa-folder-open"></i></div>
+          <h3>No Documents</h3>
+          <button class="btn btn-primary mt-3"><i class="fa fa-upload"></i> Upload</button>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="tab-panel" id="ld-notes" style="padding-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Notes</div>
+            <button class="btn btn-primary btn-sm" onclick="Pages.LoanDetail.addNote()"><i class="fa fa-plus"></i> Add Note</button>
+          </div>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Note</th><th>Added By</th><th>Date</th></tr></thead>
+              <tbody id="ldNotesBody"><tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /padding wrapper -->
+  </div><!-- /card -->
+</div><!-- /page-loan-detail -->

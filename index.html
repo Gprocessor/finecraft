@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8"/>
@@ -32,5 +33,188 @@
   <div id="toastContainer" aria-live="assertive"></div>
 
   <script type="module" src="./js/app.js"></script>
+=======
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="FinCraft — Unified Apache Fineract MFI Platform"/>
+  <title>FinCraft — Fineract Platform</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+  <!-- FinCraft Design System -->
+  <link rel="stylesheet" href="css/tokens.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+
+  <!-- Preloader while modules load -->
+  <style>
+    #fc-preloader {
+      position: fixed; inset: 0;
+      background: #070d1b;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 99999; gap: 18px;
+      transition: opacity 400ms ease;
+    }
+    #fc-preloader.fade-out { opacity: 0; pointer-events: none; }
+    .fc-pre-logo {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, #00c9b1, #5fedd8);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; color: #0a1628; font-weight: 900;
+      font-family: 'DM Serif Display', serif;
+      box-shadow: 0 0 30px rgba(0,201,177,0.4);
+      animation: prelogoPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes prelogoPulse {
+      0%,100% { box-shadow: 0 0 20px rgba(0,201,177,0.3); }
+      50%      { box-shadow: 0 0 40px rgba(0,201,177,0.7); }
+    }
+    .fc-pre-label {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px; color: #fff; letter-spacing: -0.5px;
+    }
+    .fc-pre-label em { color: #00c9b1; font-style: italic; }
+    .fc-pre-status {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+      letter-spacing: 1px; font-family: 'JetBrains Mono', monospace;
+    }
+    .fc-pre-bar {
+      width: 200px; height: 3px; background: rgba(255,255,255,0.08);
+      border-radius: 99px; overflow: hidden;
+    }
+    .fc-pre-fill {
+      height: 100%; background: #00c9b1;
+      border-radius: 99px;
+      transition: width 300ms ease;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── PRELOADER ─────────────────────────────────────────── -->
+<div id="fc-preloader">
+  <div class="fc-pre-logo">F</div>
+  <div class="fc-pre-label">Fin<em>Craft</em></div>
+  <div class="fc-pre-bar"><div class="fc-pre-fill" id="fcFill" style="width:0%"></div></div>
+  <div class="fc-pre-status" id="fcStatus">Initialising…</div>
+</div>
+
+<!-- ── APP ROOT ───────────────────────────────────────────── -->
+<div id="app"></div>
+
+<!-- ── JS MODULES (load order matters) ───────────────────── -->
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/cmd.js"></script>
+<script src="js/forms.js"></script>
+
+<!-- ── MODULE LOADER ─────────────────────────────────────── -->
+<script>
+(async function boot() {
+  const fill   = document.getElementById('fcFill');
+  const status = document.getElementById('fcStatus');
+
+  /* HTML fragments to fetch and inject, in order */
+  const MODULES = [
+    /* Pages */
+    { src:'pages/login.html',      pct: 10, label:'Login…' },
+    { src:'pages/shell.html',      pct: 20, label:'Shell…' },
+    { src:'pages/dashboard.html',  pct: 28, label:'Dashboard…' },
+    { src:'pages/clients.html',    pct: 36, label:'Clients…' },
+    { src:'pages/loans.html',      pct: 44, label:'Loans…' },
+    { src:'pages/savings.html',    pct: 50, label:'Savings…' },
+    { src:'pages/groups.html',     pct: 57, label:'Groups…' },
+    { src:'pages/accounting.html', pct: 63, label:'Accounting…' },
+    { src:'pages/tasks.html',      pct: 73, label:'Tasks & Products…' },
+    { src:'pages/system.html',     pct: 83, label:'System & Settings…' },
+    /* Modals */
+    { src:'modals/create.html',    pct: 91, label:'Create Modals…' },
+    { src:'modals/actions.html',   pct: 97, label:'Action Modals…' },
+  ];
+
+  const app = document.getElementById('app');
+
+  /* Fetch each fragment and append to #app */
+  for (const mod of MODULES) {
+    status.textContent = mod.label;
+    fill.style.width   = mod.pct + '%';
+    try {
+      const res  = await fetch(mod.src);
+      if (!res.ok) throw new Error(`${res.status} ${mod.src}`);
+      const html = await res.text();
+      const div  = document.createElement('div');
+      div.innerHTML = html;
+      while (div.firstChild) app.appendChild(div.firstChild);
+    } catch(e) {
+      console.error('[FinCraft] Failed to load module:', mod.src, e);
+    }
+  }
+
+  /* Wire shell page content into #contentArea */
+  _mountPages();
+
+  /* Fade out preloader */
+  fill.style.width = '100%';
+  status.textContent = 'Ready';
+  await new Promise(r => setTimeout(r, 300));
+  const loader = document.getElementById('fc-preloader');
+  loader.classList.add('fade-out');
+  setTimeout(() => loader.remove(), 450);
+
+  /* Auto-connect to demo server on first load */
+  _autoConnect();
+})();
+
+/* ── Mount page fragments into #contentArea ────────────── */
+function _mountPages() {
+  const content = document.getElementById('contentArea');
+  if (!content) return;
+
+  /* Pages are currently direct children of #app — move them into #contentArea */
+  const pageIds = [
+    'page-dashboard','page-clients','page-client-detail',
+    'page-loans','page-loan-detail',
+    'page-savings','page-deposits','page-shares','page-collaterals',
+    'page-groups','page-centers','page-collections',
+    'page-transfers','page-remittances',
+    'page-accounting',
+    'page-tasks','page-reports','page-surveys',
+    'page-products','page-organization',
+    'page-system','page-users','page-templates','page-self-service',
+    'page-analytics','page-navigation','page-search',
+    'page-notifications','page-profile','page-settings',
+  ];
+
+  pageIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) content.appendChild(el);
+  });
+}
+
+/* ── Auto connect to demo server ───────────────────────── */
+async function _autoConnect() {
+  await App.login(
+    FC_CONFIG.DEMO_SERVER_URL,
+    FC_CONFIG.DEMO_TENANT,
+    FC_CONFIG.DEMO_USERNAME,
+    FC_CONFIG.DEMO_PASSWORD,
+  );
+}
+</script>
+
+>>>>>>> 18cfd05 (Replace repository contents with provided js.zip extract)
 </body>
 </html>

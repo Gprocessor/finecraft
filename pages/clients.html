@@ -1,0 +1,301 @@
+<!-- =====================================================
+     PAGE: CLIENTS LIST
+===================================================== -->
+<div class="page" id="page-clients">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Clients</div>
+      <div class="page-subtitle">Manage all borrower and client accounts</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Modal.open('bulkImportModal')">
+        <i class="fa fa-file-import"></i> Bulk Import
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newClientModal')">
+        <i class="fa fa-plus"></i> New Client
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-bar" style="flex:1;max-width:300px">
+      <i class="fa fa-search"></i>
+      <input type="text" placeholder="Search name or account no…"
+             oninput="Pages.Clients.filter(this.value, document.getElementById('clientStatusFilter').value)"/>
+    </div>
+    <select class="form-control" id="clientStatusFilter" style="width:auto"
+            onchange="Pages.Clients.filter(document.querySelector('#page-clients .search-bar input').value, this.value)">
+      <option value="">All Status</option>
+      <option value="active">Active</option>
+      <option value="pending">Pending</option>
+      <option value="closed">Closed</option>
+      <option value="inactive">Inactive</option>
+    </select>
+    <select class="form-control" style="width:auto" id="clientOfficeFilter">
+      <option value="">All Offices</option>
+    </select>
+    <button class="btn btn-secondary btn-sm ml-auto">
+      <i class="fa fa-download"></i> Export
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th><input type="checkbox" onchange="document.querySelectorAll('#clientsBody input[type=checkbox]').forEach(c=>c.checked=this.checked)"></th>
+            <th>Client</th>
+            <th>Account No.</th>
+            <th>Office</th>
+            <th>Staff</th>
+            <th>Status</th>
+            <th>Joined</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="clientsBody">
+          <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading clients…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-pagination">
+      <div class="fz-12 text-muted"><span id="clientCount">0</span> total clients</div>
+      <div id="clientPagination" class="flex gap-1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: CLIENT DETAIL
+===================================================== -->
+<div class="page" id="page-client-detail">
+
+  <!-- Back breadcrumb -->
+  <div class="flex items-center gap-2 mb-4">
+    <button class="btn btn-ghost btn-sm" onclick="Router.navigate('clients')">
+      <i class="fa fa-arrow-left"></i> Clients
+    </button>
+    <i class="fa fa-chevron-right fz-10 text-muted"></i>
+    <span class="fw-600 text-secondary" id="cdBreadcrumb">Client</span>
+  </div>
+
+  <!-- Hero -->
+  <div class="detail-hero">
+    <div class="detail-avatar" id="cdAvatar">—</div>
+    <div class="detail-info" style="flex:1">
+      <div class="detail-name" id="cdName">—</div>
+      <div class="detail-meta">
+        Account: <span class="hl" id="cdAccNo">—</span>
+        &nbsp;·&nbsp;
+        <span id="cdOfficeName">—</span>
+      </div>
+      <div class="mt-2" id="cdStatusBadge"></div>
+    </div>
+    <div class="detail-actions">
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-edit"></i> Edit</button>
+      <div class="dropdown" id="cdActionDrop">
+        <button class="btn btn-secondary btn-sm" onclick="Dropdown.toggle('cdActionDrop')">
+          <i class="fa fa-ellipsis-v"></i> Actions
+        </button>
+        <div class="dropdown-menu">
+          <div class="dropdown-item" onclick="Modal.open('newLoanModal')">    <i class="fa fa-file-invoice-dollar"></i> New Loan</div>
+          <div class="dropdown-item" onclick="Modal.open('newSavingsModal')"> <i class="fa fa-piggy-bank"></i>         New Savings</div>
+          <div class="dropdown-item" onclick="Modal.open('newFDModal')">      <i class="fa fa-vault"></i>              New Fixed Deposit</div>
+          <div class="dropdown-item" onclick="Modal.open('newShareModal')">   <i class="fa fa-chart-pie"></i>          New Share Account</div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" onclick="Pages.Clients.activate(Pages.Clients._viewingId)"><i class="fa fa-user-check"></i> Activate</div>
+          <div class="dropdown-item"><i class="fa fa-upload"></i> Upload Document</div>
+          <div class="dropdown-item"><i class="fa fa-exchange-alt"></i> Transfer Client</div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item danger" onclick="Pages.Clients.deleteClient(Pages.Clients._viewingId)"><i class="fa fa-trash"></i> Delete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'cd-general')">General</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-loans')">Loans</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-savings')">Savings</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-deposits')">Deposits</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-shares')">Shares</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-charges')">Charges</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-collateral')">Collateral</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-docs')">Documents</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-notes')">Notes</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-datatables')">Data Tables</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-family')">Family</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'cd-survey')">Survey</button>
+  </div>
+
+  <!-- General -->
+  <div class="tab-panel active" id="cd-general">
+    <div class="grid-2 gap-4">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Personal Information</div></div>
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item"><div class="info-label">Full Name</div>    <div class="info-value" id="cdFullName">—</div></div>
+            <div class="info-item"><div class="info-label">Date of Birth</div><div class="info-value" id="cdDOB">—</div></div>
+            <div class="info-item"><div class="info-label">Gender</div>       <div class="info-value" id="cdGender">—</div></div>
+            <div class="info-item"><div class="info-label">Mobile</div>       <div class="info-value" id="cdMobile">—</div></div>
+            <div class="info-item"><div class="info-label">External ID</div>  <div class="info-value mono" id="cdNatId">—</div></div>
+            <div class="info-item"><div class="info-label">Joined</div>       <div class="info-value" id="cdJoined">—</div></div>
+            <div class="info-item"><div class="info-label">Status</div>       <div class="info-value" id="cdStatus">—</div></div>
+            <div class="info-item"><div class="info-label">Office</div>       <div class="info-value" id="cdOffice">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Account Summary</div></div>
+        <div class="card-body">
+          <div class="info-grid">
+            <div class="info-item"><div class="info-label">Active Loans</div>    <div class="info-value mono" id="cdActiveLoans">—</div></div>
+            <div class="info-item"><div class="info-label">Savings Balance</div> <div class="info-value mono text-teal" id="cdSavingsBal">—</div></div>
+            <div class="info-item"><div class="info-label">Total Disbursed</div> <div class="info-value mono" id="cdTotalDisbursed">—</div></div>
+            <div class="info-item"><div class="info-label">Outstanding</div>     <div class="info-value mono text-amber" id="cdOutstanding">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loans -->
+  <div class="tab-panel" id="cd-loans">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Loan Accounts</div>
+        <button class="btn btn-primary btn-sm" onclick="Modal.open('newLoanModal')">
+          <i class="fa fa-plus"></i> New Loan
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Loan ID</th><th>Product</th><th>Disbursed</th><th>Outstanding</th><th>Due</th><th>Status</th><th></th></tr></thead>
+          <tbody id="cdLoansBody"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Savings -->
+  <div class="tab-panel" id="cd-savings">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Savings Accounts</div>
+        <button class="btn btn-primary btn-sm" onclick="Modal.open('newSavingsModal')">
+          <i class="fa fa-plus"></i> New Savings
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Account No.</th><th>Product</th><th>Balance</th><th>Status</th><th></th></tr></thead>
+          <tbody id="cdSavingsBody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deposits -->
+  <div class="tab-panel" id="cd-deposits">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-vault"></i></div>
+      <h3>No Deposits</h3>
+      <p>No fixed or recurring deposits for this client.</p>
+      <button class="btn btn-primary mt-3" onclick="Modal.open('newFDModal')"><i class="fa fa-plus"></i> Open Deposit</button>
+    </div>
+  </div>
+
+  <!-- Shares -->
+  <div class="tab-panel" id="cd-shares">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-chart-pie"></i></div>
+      <h3>No Share Accounts</h3>
+      <button class="btn btn-primary mt-3" onclick="Modal.open('newShareModal')"><i class="fa fa-plus"></i> Open Share Account</button>
+    </div>
+  </div>
+
+  <!-- Charges -->
+  <div class="tab-panel" id="cd-charges">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-receipt"></i></div>
+      <h3>No Charges</h3>
+      <p>No outstanding charges on this client.</p>
+    </div>
+  </div>
+
+  <!-- Collateral -->
+  <div class="tab-panel" id="cd-collateral">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Collateral</div>
+        <button class="btn btn-primary btn-sm" onclick="Modal.open('newCollateralModal')">
+          <i class="fa fa-plus"></i> Add Collateral
+        </button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Type</th><th>Value</th><th>Description</th><th></th></tr></thead>
+          <tbody id="cdCollateralBody"><tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents -->
+  <div class="tab-panel" id="cd-docs">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-folder-open"></i></div>
+      <h3>No Documents</h3>
+      <button class="btn btn-primary mt-3"><i class="fa fa-upload"></i> Upload Document</button>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="tab-panel" id="cd-notes">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Notes</div>
+        <button class="btn btn-primary btn-sm" onclick="Pages.Clients.addNote()"><i class="fa fa-plus"></i> Add Note</button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Note</th><th>Added By</th><th>Date</th></tr></thead>
+          <tbody id="cdNotesBody"><tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Tables -->
+  <div class="tab-panel" id="cd-datatables">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-table"></i></div>
+      <h3>No Data Tables</h3>
+      <p>No additional data tables configured for clients.</p>
+    </div>
+  </div>
+
+  <!-- Family -->
+  <div class="tab-panel" id="cd-family">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-people-arrows"></i></div>
+      <h3>No Family Members</h3>
+      <button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Family Member</button>
+    </div>
+  </div>
+
+  <!-- Survey -->
+  <div class="tab-panel" id="cd-survey">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-poll"></i></div>
+      <h3>No Surveys</h3>
+      <p>No surveys completed for this client.</p>
+    </div>
+  </div>
+
+</div><!-- /page-client-detail -->

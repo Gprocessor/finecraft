@@ -1,0 +1,154 @@
+<!-- =====================================================
+     PAGE: SAVINGS
+===================================================== -->
+<div class="page" id="page-savings">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Savings Accounts</div>
+      <div class="page-subtitle">Voluntary, mandatory and current savings accounts</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newSavingsModal')">
+        <i class="fa fa-plus"></i> New Savings
+      </button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <div class="search-bar" style="flex:1;max-width:280px">
+      <i class="fa fa-search"></i>
+      <input type="text" placeholder="Search by client or account…"
+             oninput="Pages.Savings.filter(this.value)"/>
+    </div>
+    <select class="form-control" style="width:auto">
+      <option value="">All Status</option>
+      <option>Active</option><option>Pending</option><option>Closed</option>
+    </select>
+    <select class="form-control" style="width:auto" id="savingsProductFilter">
+      <option value="">All Products</option>
+    </select>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Account No.</th><th>Client</th><th>Product</th>
+            <th>Balance</th><th>Interest Rate</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="savingsBody">
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading savings accounts…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: DEPOSITS
+===================================================== -->
+<div class="page" id="page-deposits">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Deposits</div>
+      <div class="page-subtitle">Fixed and recurring deposit accounts</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newFDModal')">
+        <i class="fa fa-plus"></i> New Deposit
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'dep-fd');Pages.Deposits.loadFD()">Fixed Deposits</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'dep-rd')">Recurring Deposits</button>
+  </div>
+
+  <div class="tab-panel active" id="dep-fd">
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Account No.</th><th>Client</th><th>Product</th>
+              <th>Deposit</th><th>Rate</th><th>Maturity</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="fdBody">
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading fixed deposits…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="dep-rd">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-redo"></i></div>
+      <h3>No Recurring Deposits</h3>
+      <p>No recurring deposit accounts found.</p>
+      <button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> New RD Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: SHARES
+===================================================== -->
+<div class="page" id="page-shares">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Share Accounts</div>
+      <div class="page-subtitle">Member share ownership accounts</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newShareModal')">
+        <i class="fa fa-plus"></i> New Share Account
+      </button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Account No.</th><th>Client</th><th>Product</th>
+            <th>Shares</th><th>Unit Price</th><th>Total Value</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="sharesBody">
+          <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading share accounts…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: COLLATERALS
+===================================================== -->
+<div class="page" id="page-collaterals">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Collaterals</div>
+      <div class="page-subtitle">Client collateral records</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newCollateralModal')">
+        <i class="fa fa-plus"></i> Add Collateral
+      </button>
+    </div>
+  </div>
+  <div class="empty-state">
+    <div class="empty-state-icon"><i class="fa fa-shield-alt"></i></div>
+    <h3>No Collateral Records</h3>
+    <p>Select a client to view or add collateral records.</p>
+  </div>
+</div>

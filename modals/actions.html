@@ -1,0 +1,1154 @@
+<!-- =====================================================
+     MODAL: MAKE REPAYMENT
+===================================================== -->
+<div class="modal-overlay" id="repaymentModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="fa fa-hand-holding-usd text-teal" style="margin-right:8px"></i>Make Repayment</div>
+        <div class="modal-subtitle">Record a loan repayment transaction</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('repaymentModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="rpLoanId"/>
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Transaction Date <span class="req">*</span></label>
+          <input class="form-control" id="rpDate" type="date"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Amount <span class="req">*</span></label>
+          <div class="input-group">
+            <div class="input-addon">$</div>
+            <input class="form-control" id="rpAmount" type="number" placeholder="0.00"
+                   style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Type</label>
+          <select class="form-control" id="rpPayType">
+            <option value="1">Cash</option>
+            <option value="2">Mobile Money</option>
+            <option value="3">Bank Transfer</option>
+            <option value="4">Cheque</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Receipt Number</label>
+          <input class="form-control" id="rpReceipt" placeholder="Optional"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Transaction Reference</label>
+          <input class="form-control" id="rpReference" placeholder="Optional"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Number</label>
+          <input class="form-control" id="rpAccount" placeholder="For bank/mobile payment"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Note</label>
+          <textarea class="form-control" id="rpNote" rows="2" placeholder="Optional note…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('repaymentModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Loans.submitRepayment()">
+        <i class="fa fa-check"></i> Submit Repayment
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: JOURNAL ENTRY
+===================================================== -->
+<div class="modal-overlay" id="journalEntryModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title">New Journal Entry</div>
+      <button class="modal-close" onclick="Modal.close('journalEntryModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2 mb-4">
+        <div class="form-group">
+          <label class="form-label">Office <span class="req">*</span></label>
+          <select class="form-control" id="jeOffice">
+            <option value="">— Loading offices… —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency <span class="req">*</span></label>
+          <select class="form-control" id="jeCurrency">
+            <option value="USD">USD</option><option value="XOF">XOF</option><option value="GHS">GHS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Transaction Date <span class="req">*</span></label>
+          <input class="form-control" id="jeDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Type</label>
+          <select class="form-control" id="jePayType">
+            <option value="1">Cash</option><option value="2">Mobile Money</option><option value="3">Bank Transfer</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Reference No.</label>
+          <input class="form-control" id="jeRef" placeholder="Optional reference number"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Comments</label>
+          <textarea class="form-control" id="jeComments" rows="2" placeholder="Optional comments…"></textarea>
+        </div>
+      </div>
+
+      <!-- Debits -->
+      <div class="fw-700 mb-2 fz-12 text-muted" style="text-transform:uppercase;letter-spacing:1px">Debits</div>
+      <div class="card mb-3" style="background:var(--bg-card-alt)">
+        <div class="tbl-wrap">
+          <table class="tbl" id="jeDebitTable">
+            <thead><tr><th>GL Account</th><th>Amount</th><th></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><select class="form-control" id="jeDebitGL" style="border:none;background:none"><option value="">— Select GL Account —</option></select></td>
+                <td><input class="form-control" type="number" placeholder="0.00" style="border:none;background:none"/></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="Pages.Accounting.addDebitRow()"><i class="fa fa-plus"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Credits -->
+      <div class="fw-700 mb-2 fz-12 text-muted" style="text-transform:uppercase;letter-spacing:1px">Credits</div>
+      <div class="card" style="background:var(--bg-card-alt)">
+        <div class="tbl-wrap">
+          <table class="tbl" id="jeCreditTable">
+            <thead><tr><th>GL Account</th><th>Amount</th><th></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><select class="form-control" id="jeCreditGL" style="border:none;background:none"><option value="">— Select GL Account —</option></select></td>
+                <td><input class="form-control" type="number" placeholder="0.00" style="border:none;background:none"/></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="Pages.Accounting.addCreditRow()"><i class="fa fa-plus"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('journalEntryModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Accounting.submitJournalEntry()">
+        <i class="fa fa-save"></i> Submit Entry
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: LOAN RESCHEDULE
+===================================================== -->
+<div class="modal-overlay" id="loanRescheduleModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Reschedule Loan</div>
+        <div class="modal-subtitle">Modify the repayment schedule for this loan</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('loanRescheduleModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="rsLoanId"/>
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Reschedule Reason <span class="req">*</span></label>
+          <select class="form-control" id="rsReason">
+            <option value="1">Client Request</option>
+            <option value="2">Business Difficulty</option>
+            <option value="3">Health Issues</option>
+            <option value="4">Natural Disaster</option>
+            <option value="5">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reschedule From Date <span class="req">*</span></label>
+          <input class="form-control" id="rsFromDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adjusted Due Date</label>
+          <input class="form-control" id="rsToDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">New Interest Rate (% p.a.)</label>
+          <input class="form-control" id="rsRate" type="number" placeholder="Leave blank to keep current"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Extra Terms (months)</label>
+          <input class="form-control" id="rsExtraTerms" type="number" placeholder="0" value="0"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Grace on Principal (installments)</label>
+          <input class="form-control" id="rsGrace" type="number" placeholder="0" value="0"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Comments</label>
+          <textarea class="form-control" id="rsComments" rows="2" placeholder="Reason for reschedule…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('loanRescheduleModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Forms.submitReschedule()">
+        <i class="fa fa-calendar-alt"></i> Apply Reschedule
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: LOAN WRITE-OFF
+===================================================== -->
+<div class="modal-overlay" id="loanWriteOffModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="fa fa-pen-nib text-red" style="margin-right:8px"></i>Write Off Loan</div>
+        <div class="modal-subtitle">This action is permanent and cannot be undone</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('loanWriteOffModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="woLoanId"/>
+      <div class="card mb-4" style="background:rgba(248,113,113,0.06);border-color:rgba(248,113,113,0.2)">
+        <div class="card-body flex items-center gap-3">
+          <i class="fa fa-exclamation-triangle text-red" style="font-size:20px;flex-shrink:0"></i>
+          <div>
+            <div class="fw-700 text-red">Warning — Irreversible Action</div>
+            <div class="fz-12 text-secondary">Writing off a loan records it as a loss. The client's obligation remains, but the loan will no longer appear as active.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Write-Off Date <span class="req">*</span></label>
+          <input class="form-control" id="woDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note / Reason <span class="req">*</span></label>
+          <textarea class="form-control" id="woNote" rows="3" placeholder="Provide reason for write-off…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="woConfirm" style="accent-color:var(--red-400)">
+            &nbsp;I confirm this loan should be written off
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('loanWriteOffModal')">Cancel</button>
+      <button class="btn btn-danger" onclick="Forms.submitWriteOff()">
+        <i class="fa fa-pen-nib"></i> Confirm Write Off
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: INTEREST PAUSE
+===================================================== -->
+<div class="modal-overlay" id="interestPauseModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">Add Interest Pause</div>
+      <button class="modal-close" onclick="Modal.close('interestPauseModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group">
+          <label class="form-label">Pause From <span class="req">*</span></label>
+          <input class="form-control" id="ipFrom" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pause To <span class="req">*</span></label>
+          <input class="form-control" id="ipTo" type="date"/>
+        </div>
+      </div>
+      <div class="card mt-3" style="background:var(--bg-card-alt)">
+        <div class="card-body fz-12 text-secondary">
+          Interest will not accrue during the pause period. Repayments will only cover principal.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('interestPauseModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Forms.submitInterestPause()">
+        <i class="fa fa-pause-circle"></i> Apply Pause
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: ADD COLLATERAL
+===================================================== -->
+<div class="modal-overlay" id="newCollateralModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">Add Collateral</div>
+      <button class="modal-close" onclick="Modal.close('newCollateralModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Client <span class="req">*</span></label>
+          <input class="form-control" id="collClientSearch" placeholder="Search client…"
+                 oninput="Forms.setupClientSearch('collClientSearch','collClientId')"/>
+          <input type="hidden" id="collClientId"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Collateral Type <span class="req">*</span></label>
+          <select class="form-control" id="collTypeId">
+            <option value="1">Land Title</option>
+            <option value="2">Vehicle</option>
+            <option value="3">Equipment</option>
+            <option value="4">Guarantor</option>
+            <option value="5">Cash Deposit</option>
+            <option value="6">Inventory</option>
+            <option value="7">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Value <span class="req">*</span></label>
+          <div class="input-group">
+            <div class="input-addon">$</div>
+            <input class="form-control" id="collValue" type="number" placeholder="0.00"
+                   style="border-radius:0 var(--radius-sm) var(--radius-sm) 0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency</label>
+          <select class="form-control" id="collCurrency">
+            <option>USD</option><option>XOF</option><option>GHS</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="collDesc" rows="2" placeholder="Describe the collateral in detail…"></textarea>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Upload Document</label>
+          <div style="border:2px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer"
+               onmouseover="this.style.borderColor='var(--teal-500)'"
+               onmouseout="this.style.borderColor='var(--border)'"
+               onclick="Toast.info('Upload','Select title deed, photos or valuation report')">
+            <i class="fa fa-upload text-teal" style="font-size:20px;display:block;margin-bottom:8px"></i>
+            <div class="fz-12 text-muted">Attach title deed, photos or valuation report</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newCollateralModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Forms.submitCollateral()">
+        <i class="fa fa-save"></i> Add Collateral
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: ADD GL ACCOUNT
+===================================================== -->
+<div class="modal-overlay" id="glAccountModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">Add GL Account</div>
+      <button class="modal-close" onclick="Modal.close('glAccountModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group">
+          <label class="form-label">GL Code <span class="req">*</span></label>
+          <input class="form-control" id="glaCode" placeholder="e.g. 1300"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Name <span class="req">*</span></label>
+          <input class="form-control" id="glaName" placeholder="e.g. Investments"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Account Type <span class="req">*</span></label>
+          <select class="form-control" id="glaType">
+            <option value="ASSET">Asset</option>
+            <option value="LIABILITY">Liability</option>
+            <option value="EQUITY">Equity</option>
+            <option value="INCOME">Income</option>
+            <option value="EXPENSE">Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Usage</label>
+          <select class="form-control" id="glaUsage">
+            <option value="DETAIL">Detail (posting allowed)</option>
+            <option value="HEADER">Header (grouping only)</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Parent Account</label>
+          <select class="form-control" id="glaParent">
+            <option value="">— None (Top Level) —</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="glaDesc" rows="2" placeholder="Optional description…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="glaManual" checked style="accent-color:var(--teal-500)">
+            &nbsp;Manual Entries Allowed
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('glAccountModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Accounting.submitGLAccount()">
+        <i class="fa fa-save"></i> Add Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW CHARGE
+===================================================== -->
+<div class="modal-overlay" id="newChargeModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Charge</div>
+      <button class="modal-close" onclick="Modal.close('newChargeModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Charge Name <span class="req">*</span></label>
+          <input class="form-control" id="ncName" placeholder="e.g. Loan Processing Fee"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Applies To</label>
+          <select class="form-control" id="ncAppliesTo">
+            <option value="1">Loans</option>
+            <option value="2">Savings</option>
+            <option value="3">Clients</option>
+            <option value="4">Shares</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Charge Time</label>
+          <select class="form-control" id="ncTimeType">
+            <option value="1">Disbursement</option>
+            <option value="2">Specified Due Date</option>
+            <option value="3">Installment Fee</option>
+            <option value="4">Overdue Installment</option>
+            <option value="5">Maturity</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Charge Calculation</label>
+          <select class="form-control" id="ncCalcType">
+            <option value="1">Flat</option>
+            <option value="2">% of Amount</option>
+            <option value="3">% of Principal Outstanding</option>
+            <option value="4">% of Interest</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount / Percentage <span class="req">*</span></label>
+          <input class="form-control" id="ncAmount" type="number" placeholder="0.00"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency</label>
+          <select class="form-control" id="ncCurrency">
+            <option value="USD">USD</option><option value="XOF">XOF</option><option value="GHS">GHS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-check mt-3">
+            <input type="checkbox" id="ncActive" checked style="accent-color:var(--teal-500)">
+            &nbsp;Active
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="form-check mt-3">
+            <input type="checkbox" id="ncPenalty" style="accent-color:var(--red-400)">
+            &nbsp;This is a penalty charge
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newChargeModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Pages.Products.submitCharge()">
+        <i class="fa fa-save"></i> Create Charge
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: NEW TAX COMPONENT
+===================================================== -->
+<div class="modal-overlay" id="newTaxModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Tax Component</div>
+      <button class="modal-close" onclick="Modal.close('newTaxModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Name <span class="req">*</span></label>
+          <input class="form-control" id="taxName" placeholder="e.g. VAT on Interest"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-control" id="taxType">
+            <option value="1">Flat</option>
+            <option value="2">Percentage</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Percentage / Amount <span class="req">*</span></label>
+          <input class="form-control" id="taxPercentage" type="number" placeholder="18"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Start Date</label>
+          <input class="form-control" id="taxStartDate" type="date"/>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Credit Account (GL)</label>
+          <select class="form-control" id="taxCreditGL">
+            <option value="">— Select GL Account —</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">Debit Account (GL)</label>
+          <select class="form-control" id="taxDebitGL">
+            <option value="">— Select GL Account —</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('newTaxModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Toast.success('Tax','Tax component created successfully')">
+        <i class="fa fa-save"></i> Create Tax Component
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: SMS CAMPAIGN
+===================================================== -->
+<div class="modal-overlay" id="smsCampaignModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fa fa-sms text-teal" style="margin-right:8px"></i>New SMS Campaign</div>
+      <button class="modal-close" onclick="Modal.close('smsCampaignModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Campaign Name <span class="req">*</span></label>
+          <input class="form-control" id="smsName" placeholder="e.g. Repayment Reminder"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Rule / Trigger</label>
+          <select class="form-control" id="smsTrigger">
+            <option value="1">Loan Repayment Due</option>
+            <option value="2">Loan Disbursement</option>
+            <option value="3">Savings Withdrawal</option>
+            <option value="4">Scheduled (Date-Based)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Run Frequency</label>
+          <select class="form-control" id="smsFrequency">
+            <option>Daily</option><option>Weekly</option><option>Monthly</option><option>Once</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Start Date</label>
+          <input class="form-control" id="smsStartDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">End Date (optional)</label>
+          <input class="form-control" id="smsEndDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">SMS Provider</label>
+          <select class="form-control" id="smsProvider">
+            <option>Default Provider</option>
+            <option>Twilio</option>
+            <option>Africa's Talking</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message Template <span class="req">*</span></label>
+          <textarea class="form-control" id="smsMessage" rows="4"
+                    placeholder="Dear {clientName}, your loan repayment of {amount} is due on {dueDate}. Please pay promptly. Thank you."></textarea>
+          <div class="form-hint">Variables: {clientName}, {amount}, {dueDate}, {loanId}, {officeName}</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('smsCampaignModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Forms.submitSMSCampaign()">
+        <i class="fa fa-save"></i> Create Campaign
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: TWO-FACTOR AUTH SETUP
+===================================================== -->
+<div class="modal-overlay" id="twoFactorModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="fa fa-lock text-teal" style="margin-right:8px"></i>Enable Two-Factor Auth</div>
+        <div class="modal-subtitle">Scan the QR code with your authenticator app</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('twoFactorModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="text-center mb-4">
+        <div style="width:120px;height:120px;background:var(--bg-hover);border:1px solid var(--border);border-radius:var(--radius-md);margin:0 auto 14px;display:flex;align-items:center;justify-content:center">
+          <i class="fa fa-qrcode" style="font-size:60px;color:var(--text-muted)"></i>
+        </div>
+        <div class="fz-12 text-muted">Scan with Google Authenticator, Authy or any TOTP app</div>
+      </div>
+      <div class="separator"></div>
+      <div class="form-group">
+        <label class="form-label">Enter 6-digit verification code <span class="req">*</span></label>
+        <input class="form-control" id="tfaCode" type="text" placeholder="000 000"
+               maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+               style="text-align:center;font-size:22px;font-family:var(--font-mono);letter-spacing:8px"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('twoFactorModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Forms.submit2FA()">
+        <i class="fa fa-shield-alt"></i> Enable 2FA
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: SELF SERVICE USER
+===================================================== -->
+<div class="modal-overlay" id="selfServiceUserModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div class="modal-title">New Self Service User</div>
+      <button class="modal-close" onclick="Modal.close('selfServiceUserModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group fg-span">
+          <label class="form-label">Client <span class="req">*</span></label>
+          <input class="form-control" id="ssClientSearch" placeholder="Search client…"
+                 oninput="Forms.setupClientSearch('ssClientSearch','ssClientId')"/>
+          <input type="hidden" id="ssClientId"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username <span class="req">*</span></label>
+          <input class="form-control" id="ssUsername" placeholder="e.g. john.banda" autocomplete="off"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email <span class="req">*</span></label>
+          <input class="form-control" id="ssEmail" type="email" placeholder="john@example.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password <span class="req">*</span></label>
+          <input class="form-control" id="ssPassword" type="password" autocomplete="new-password"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input class="form-control" id="ssConfirm" type="password" autocomplete="new-password"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('selfServiceUserModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="Toast.success('User Created','Self service user created successfully')">
+        <i class="fa fa-save"></i> Create User
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: CONFIGURATION WIZARD
+===================================================== -->
+<div class="modal-overlay" id="configWizardModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="fa fa-magic text-teal" style="margin-right:8px"></i>Configuration Wizard</div>
+        <div class="modal-subtitle">Set up your Fineract instance step by step</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('configWizardModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2 gap-3">
+        <div class="card" style="cursor:pointer" onclick="Router.navigate('organization');Modal.close('configWizardModal')">
+          <div class="card-body flex items-center gap-3">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--teal-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa fa-building text-teal"></i></div>
+            <div style="flex:1"><div class="fw-700 mb-1">1. Set Up Offices</div><div class="fz-12 text-muted">Create your main office and branches</div></div>
+            <span class="badge b-active">Step 1</span>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="Router.navigate('organization');Modal.close('configWizardModal')">
+          <div class="card-body flex items-center gap-3">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:rgba(251,191,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa fa-coins text-amber"></i></div>
+            <div style="flex:1"><div class="fw-700 mb-1">2. Configure Currencies</div><div class="fz-12 text-muted">Set working currencies for the platform</div></div>
+            <span class="badge b-pending">Step 2</span>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="Router.navigate('accounting');Modal.close('configWizardModal')">
+          <div class="card-body flex items-center gap-3">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:rgba(74,222,128,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa fa-list-ol text-green"></i></div>
+            <div style="flex:1"><div class="fw-700 mb-1">3. Chart of Accounts</div><div class="fz-12 text-muted">Define your GL account structure</div></div>
+            <span class="badge b-closed">Step 3</span>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="Router.navigate('products');Modal.close('configWizardModal')">
+          <div class="card-body flex items-center gap-3">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:var(--teal-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa fa-box text-teal"></i></div>
+            <div style="flex:1"><div class="fw-700 mb-1">4. Create Loan Products</div><div class="fz-12 text-muted">Define your loan product offerings</div></div>
+            <span class="badge b-closed">Step 4</span>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="Router.navigate('products');Modal.close('configWizardModal')">
+          <div class="card-body flex items-center gap-3">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:rgba(251,191,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa fa-piggy-bank text-amber"></i></div>
+            <div style="flex:1"><div class="fw-700 mb-1">5. Savings Products</div><div class="fz-12 text-muted">Define savings account types</div></div>
+            <span class="badge b-closed">Step 5</span>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="Router.navigate('organization');Modal.close('configWizardModal')">
+          <div class="card-body flex items-center gap-3">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:rgba(74,222,128,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa fa-id-badge text-green"></i></div>
+            <div style="flex:1"><div class="fw-700 mb-1">6. Add Staff</div><div class="fz-12 text-muted">Create loan officers and staff members</div></div>
+            <span class="badge b-closed">Step 6</span>
+          </div>
+        </div>
+      </div>
+      <div class="progress mt-4" style="height:8px">
+        <div class="progress-bar pb-teal" style="width:16%"></div>
+      </div>
+      <div class="fz-12 text-muted mt-2 text-right">1 of 6 steps completed</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('configWizardModal')">Close</button>
+      <button class="btn btn-primary" onclick="Router.navigate('organization');Modal.close('configWizardModal')">
+        <i class="fa fa-play"></i> Start Setup
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: RUN REPORT (parameters)
+===================================================== -->
+<div class="modal-overlay" id="runReportModal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="runReportName">Run Report</div>
+        <div class="modal-subtitle">Configure parameters and generate report</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('runReportModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2">
+        <div class="form-group">
+          <label class="form-label">Office</label>
+          <select class="form-control" id="rrOffice">
+            <option value="">All Offices</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency</label>
+          <select class="form-control" id="rrCurrency">
+            <option value="USD">USD</option><option value="XOF">XOF</option><option value="GHS">GHS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">From Date</label>
+          <input class="form-control" id="rrFromDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">To Date</label>
+          <input class="form-control" id="rrToDate" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Loan Officer</label>
+          <select class="form-control" id="rrOfficer">
+            <option value="">All Officers</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Output Format</label>
+          <select class="form-control" id="rrFormat">
+            <option value="json">JSON (view in browser)</option>
+            <option value="xlsx">Excel (.xlsx)</option>
+            <option value="pdf">PDF</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('runReportModal')">Cancel</button>
+      <button class="btn btn-primary" id="rrConfirmBtn">
+        <i class="fa fa-play"></i> Run Report
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: REPORT OUTPUT
+===================================================== -->
+<div class="modal-overlay top-align" id="reportOutputModal" style="padding:20px;overflow-y:auto">
+  <div class="modal modal-xl" style="margin:auto">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="reportOutputTitle">Report</div>
+        <div class="modal-subtitle">Generated: <span id="reportOutputDate">—</span></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="btn btn-secondary btn-sm" onclick="Toast.info('Export','Downloading report as PDF…')">
+          <i class="fa fa-file-pdf"></i> PDF
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="Forms.exportCSV()">
+          <i class="fa fa-file-excel"></i> Excel
+        </button>
+        <button class="modal-close" onclick="Modal.close('reportOutputModal')"><i class="fa fa-times"></i></button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div id="reportOutputBody">
+        <div class="empty-state" style="padding:40px">
+          <div class="empty-state-icon"><i class="fa fa-table"></i></div>
+          <h3>No Report Data</h3>
+          <p>Run a report to see results here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: AD HOC QUERY
+===================================================== -->
+<div class="modal-overlay top-align" id="adhocQueryModal" style="padding:20px;overflow-y:auto">
+  <div class="modal modal-xl" style="margin:auto">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="fa fa-database text-teal" style="margin-right:8px"></i>Ad Hoc Query Builder</div>
+        <div class="modal-subtitle">Run custom SQL queries against Fineract data</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('adhocQueryModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid fg-2 mb-3">
+        <div class="form-group">
+          <label class="form-label">Query Name</label>
+          <input class="form-control" id="adhocQueryName" placeholder="e.g. Overdue Loans by Region"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Base Entity</label>
+          <select class="form-control" id="adhocEntity">
+            <option>m_loan</option>
+            <option>m_client</option>
+            <option>m_savings_account</option>
+            <option>m_group</option>
+            <option>acc_gl_journal_entry</option>
+            <option>m_office</option>
+            <option>m_staff</option>
+          </select>
+        </div>
+        <div class="form-group fg-span">
+          <label class="form-label">SQL Query <span class="req">*</span></label>
+          <textarea class="form-control" id="adhocSQL" rows="7"
+                    style="font-family:var(--font-mono);font-size:12px"
+                    placeholder="SELECT c.display_name, l.account_no, l.principal_outstanding_derived
+FROM m_loan l
+JOIN m_client c ON l.client_id = c.id
+WHERE l.loan_status_id = 300
+ORDER BY l.principal_outstanding_derived DESC
+LIMIT 50"></textarea>
+        </div>
+      </div>
+      <div class="flex gap-2 mb-4">
+        <button class="btn btn-primary btn-sm" onclick="Forms.runAdhocQuery()">
+          <i class="fa fa-play"></i> Run Query
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="Toast.success('Saved','Query saved successfully')">
+          <i class="fa fa-save"></i> Save Query
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="Forms.exportCSV()">
+          <i class="fa fa-download"></i> Export CSV
+        </button>
+      </div>
+      <div id="adhocResults">
+        <div class="empty-state" style="padding:30px">
+          <div class="empty-state-icon"><i class="fa fa-table"></i></div>
+          <h3>Run a query to see results</h3>
+          <p>Results will appear here after execution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: SAVINGS DETAIL
+===================================================== -->
+<div class="modal-overlay top-align" id="savingsDetailModal" style="padding:20px;overflow-y:auto">
+  <div class="modal modal-lg" style="margin:auto">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="sdTitle">Savings Account</div>
+        <div class="modal-subtitle" id="sdSubtitle">—</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('savingsDetailModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <!-- Hero -->
+    <div class="hero-metrics">
+      <div class="hero-metric"><div class="hero-metric-val teal" id="sdBalance">—</div><div class="hero-metric-lbl">Balance</div></div>
+      <div class="hero-metric"><div class="hero-metric-val" id="sdRate">—</div><div class="hero-metric-lbl">Interest Rate</div></div>
+      <div class="hero-metric"><div class="hero-metric-val teal" id="sdStatus">—</div><div class="hero-metric-lbl">Status</div></div>
+    </div>
+    <!-- Actions -->
+    <div class="action-strip">
+      <button class="btn btn-primary btn-sm"   onclick="Pages.Savings.doAction(Pages.SavingsDetail._current?.id,'deposit')"><i class="fa fa-plus-circle"></i> Deposit</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Savings.doAction(Pages.SavingsDetail._current?.id,'withdrawal')"><i class="fa fa-minus-circle"></i> Withdraw</button>
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-exchange-alt"></i> Transfer</button>
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-receipt"></i> Add Charge</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Savings.doAction(Pages.SavingsDetail._current?.id,'approve')"><i class="fa fa-check-circle"></i> Approve</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Savings.doAction(Pages.SavingsDetail._current?.id,'activate')"><i class="fa fa-play-circle"></i> Activate</button>
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Savings.doAction(Pages.SavingsDetail._current?.id,'blockAccount')"><i class="fa fa-lock"></i> Freeze</button>
+      <button class="btn btn-danger btn-sm"    onclick="Pages.Savings.doAction(Pages.SavingsDetail._current?.id,'close')"><i class="fa fa-times-circle"></i> Close</button>
+    </div>
+    <div class="modal-body p0">
+      <div style="padding:0 22px">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="Tabs.switch(this,'sd-txns')">Transactions</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'sd-charges')">Charges</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'sd-standing')">Standing Instructions</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'sd-docs')">Documents</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'sd-notes')">Notes</button>
+        </div>
+        <div class="tab-panel active" id="sd-txns" style="padding-bottom:20px">
+          <div class="card">
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Balance</th><th>Channel</th></tr></thead>
+                <tbody id="sdTxnBody">
+                  <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" id="sd-charges" style="padding-bottom:20px">
+          <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-receipt"></i></div><h3>No Charges</h3></div>
+        </div>
+        <div class="tab-panel" id="sd-standing" style="padding-bottom:20px">
+          <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-repeat"></i></div><h3>No Standing Instructions</h3></div>
+        </div>
+        <div class="tab-panel" id="sd-docs" style="padding-bottom:20px">
+          <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-folder"></i></div><h3>No Documents</h3></div>
+        </div>
+        <div class="tab-panel" id="sd-notes" style="padding-bottom:20px">
+          <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-sticky-note"></i></div><h3>No Notes</h3></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: FD DETAIL
+===================================================== -->
+<div class="modal-overlay top-align" id="fdDetailModal" style="padding:20px;overflow-y:auto">
+  <div class="modal modal-lg" style="margin:auto">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="fdTitle">Fixed Deposit</div>
+        <div class="modal-subtitle" id="fdSubtitle">—</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('fdDetailModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="hero-metrics">
+      <div class="hero-metric"><div class="hero-metric-val teal" id="fdAmount">—</div><div class="hero-metric-lbl">Deposit</div></div>
+      <div class="hero-metric"><div class="hero-metric-val" id="fdRate">—</div><div class="hero-metric-lbl">Rate</div></div>
+      <div class="hero-metric"><div class="hero-metric-val teal" id="fdInterest">—</div><div class="hero-metric-lbl">Interest Earned</div></div>
+      <div class="hero-metric"><div class="hero-metric-val" id="fdMaturity">—</div><div class="hero-metric-lbl">Maturity</div></div>
+      <div class="hero-metric"><div class="hero-metric-val teal" id="fdStatus">—</div><div class="hero-metric-lbl">Status</div></div>
+    </div>
+    <div class="action-strip">
+      <button class="btn btn-primary btn-sm"   onclick="Pages.Deposits.viewFD&&Pages.FDDetail._current&&API.FixedDeposits.approve(Pages.FDDetail._current.id,{}).then(()=>Toast.success('Approved','FD approved'))"><i class="fa fa-check"></i> Approve</button>
+      <button class="btn btn-secondary btn-sm" onclick="API.FixedDeposits.activate&&Pages.FDDetail._current&&API.FixedDeposits.activate(Pages.FDDetail._current.id,{}).then(()=>Toast.success('Activated','FD activated')).catch(e=>Toast.error('Failed',e.message))"><i class="fa fa-play-circle"></i> Activate</button>
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-undo"></i> Premature Closure</button>
+      <button class="btn btn-danger btn-sm"><i class="fa fa-times-circle"></i> Close Account</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2 gap-4">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Deposit Details</div></div>
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-item"><div class="info-label">Client</div>             <div class="info-value" id="fdClient">—</div></div>
+              <div class="info-item"><div class="info-label">Product</div>            <div class="info-value" id="fdProduct">—</div></div>
+              <div class="info-item"><div class="info-label">Activation Date</div>   <div class="info-value" id="fdActivationDate">—</div></div>
+              <div class="info-item"><div class="info-label">Maturity Date</div>     <div class="info-value" id="fdMaturityDate">—</div></div>
+              <div class="info-item"><div class="info-label">Maturity Instruction</div><div class="info-value" id="fdMatInstr">—</div></div>
+              <div class="info-item"><div class="info-label">Total at Maturity</div> <div class="info-value mono text-teal fw-700" id="fdTotal">—</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Transactions</div></div>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Balance</th></tr></thead>
+              <tbody id="fdTxnBody">
+                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     MODAL: GROUP DETAIL
+===================================================== -->
+<div class="modal-overlay top-align" id="groupDetailModal" style="padding:20px;overflow-y:auto">
+  <div class="modal modal-xl" style="margin:auto">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="gdTitle">Group</div>
+        <div class="modal-subtitle" id="gdSubtitle">—</div>
+      </div>
+      <button class="modal-close" onclick="Modal.close('groupDetailModal')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="hero-metrics">
+      <div class="hero-metric"><div class="hero-metric-val teal" id="gdMembers">—</div><div class="hero-metric-lbl">Members</div></div>
+      <div class="hero-metric"><div class="hero-metric-val" id="gdActiveLoans">—</div><div class="hero-metric-lbl">Active Loans</div></div>
+      <div class="hero-metric"><div class="hero-metric-val teal" id="gdStatus">—</div><div class="hero-metric-lbl">Status</div></div>
+    </div>
+    <div class="action-strip">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newLoanModal')"><i class="fa fa-file-invoice-dollar"></i> New Loan</button>
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-user-plus"></i> Add Member</button>
+      <button class="btn btn-secondary btn-sm" onclick="Router.navigate('collections');Modal.close('groupDetailModal')"><i class="fa fa-calendar-day"></i> Collection Sheet</button>
+      <button class="btn btn-secondary btn-sm"><i class="fa fa-user-tie"></i> Assign Staff</button>
+      <button class="btn btn-danger btn-sm"><i class="fa fa-times-circle"></i> Close Group</button>
+    </div>
+    <div class="modal-body p0">
+      <div style="padding:0 22px">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="Tabs.switch(this,'gd-general')">General</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'gd-members')">Members</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'gd-loans')">Loans</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'gd-savings')">Savings</button>
+          <button class="tab-btn" onclick="Tabs.switch(this,'gd-notes')">Notes</button>
+        </div>
+        <div class="tab-panel active" id="gd-general" style="padding-bottom:20px">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Group Information</div></div>
+            <div class="card-body">
+              <div class="info-grid">
+                <div class="info-item"><div class="info-label">Group Name</div>     <div class="info-value" id="gdName">—</div></div>
+                <div class="info-item"><div class="info-label">Account No.</div>    <div class="info-value mono" id="gdAccNo">—</div></div>
+                <div class="info-item"><div class="info-label">Office</div>         <div class="info-value" id="gdOffice">—</div></div>
+                <div class="info-item"><div class="info-label">Staff</div>          <div class="info-value" id="gdStaff">—</div></div>
+                <div class="info-item"><div class="info-label">Activation Date</div><div class="info-value" id="gdActivation">—</div></div>
+                <div class="info-item"><div class="info-label">Status</div>         <div class="info-value" id="gdStatusField">—</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" id="gd-members" style="padding-bottom:20px">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Members</div><button class="btn btn-primary btn-sm"><i class="fa fa-user-plus"></i> Add Member</button></div>
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead><tr><th>Client</th><th>Account No.</th><th>Status</th></tr></thead>
+                <tbody id="gdMembersBody">
+                  <tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" id="gd-loans" style="padding-bottom:20px">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Loan Accounts</div><button class="btn btn-primary btn-sm" onclick="Modal.open('newLoanModal')"><i class="fa fa-plus"></i> New Loan</button></div>
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead><tr><th>Loan ID</th><th>Client</th><th>Product</th><th>Outstanding</th><th>Status</th></tr></thead>
+                <tbody id="gdLoansBody">
+                  <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" id="gd-savings" style="padding-bottom:20px">
+          <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-piggy-bank"></i></div><h3>No Group Savings</h3></div>
+        </div>
+        <div class="tab-panel" id="gd-notes" style="padding-bottom:20px">
+          <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-sticky-note"></i></div><h3>No Notes</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Note</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     GLOBAL: Toast Container + Command Palette
+===================================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="cmd-palette" id="cmdPalette">
+  <div class="cmd-box">
+    <div class="cmd-input-row">
+      <i class="fa fa-terminal"></i>
+      <input id="cmdInput" class="cmd-input"
+             placeholder="Type a command or search…"
+             oninput="CMD.filter(this.value)"
+             autocomplete="off"/>
+      <span class="cmd-hint">ESC to close</span>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <div class="cmd-key"><kbd>↑↓</kbd> Navigate</div>
+      <div class="cmd-key"><kbd>↵</kbd> Select</div>
+      <div class="cmd-key"><kbd>ESC</kbd> Close</div>
+    </div>
+  </div>
+</div>

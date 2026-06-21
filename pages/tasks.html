@@ -1,0 +1,519 @@
+<!-- =====================================================
+     PAGE: CHECKER INBOX / TASKS
+===================================================== -->
+<div class="page" id="page-tasks">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Checker Inbox &amp; Tasks</div>
+      <div class="page-subtitle">Approve, reject and manage maker-checker tasks</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Tasks.load()">
+        <i class="fa fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'task-checker')">
+      Checker Inbox <span class="nav-badge" id="checkerBadge" style="margin-left:6px">…</span>
+    </button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'task-approve')">Loan Approvals</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'task-disburse')">Loan Disbursal</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'task-client')">Client Approval</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'task-reschedule')">Reschedule Review</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'task-standing')">Standing Instructions</button>
+  </div>
+
+  <!-- Checker Inbox -->
+  <div class="tab-panel active" id="task-checker">
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Action</th><th>Entity</th><th>Entity ID</th>
+              <th>Maker</th><th>Made On</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="checkerBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading tasks…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loan Approvals -->
+  <div class="tab-panel" id="task-approve">
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>Loan ID</th><th>Client</th><th>Product</th><th>Amount</th><th>Submitted</th><th></th></tr>
+          </thead>
+          <tbody id="loanApproveBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading pending approvals…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loan Disbursal -->
+  <div class="tab-panel" id="task-disburse">
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>Loan ID</th><th>Client</th><th>Product</th><th>Amount</th><th>Approved On</th><th></th></tr>
+          </thead>
+          <tbody id="loanDisburseBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading approved loans…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client Approval -->
+  <div class="tab-panel" id="task-client">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-user-check"></i></div>
+      <h3>No Clients Pending Approval</h3>
+      <p>Clients submitted for activation will appear here.</p>
+    </div>
+  </div>
+
+  <!-- Reschedule Review -->
+  <div class="tab-panel" id="task-reschedule">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-calendar-alt"></i></div>
+      <h3>No Reschedule Requests</h3>
+      <p>Pending loan reschedule requests will appear here.</p>
+    </div>
+  </div>
+
+  <!-- Standing Instructions -->
+  <div class="tab-panel" id="task-standing">
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fa fa-repeat"></i></div>
+      <h3>No Pending Standing Instructions</h3>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: REPORTS
+===================================================== -->
+<div class="page" id="page-reports">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Reports</div>
+      <div class="page-subtitle">Run, schedule and export live Fineract reports</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="Pages.Reports.load()">
+        <i class="fa fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="filter-bar mb-4">
+    <button class="btn btn-primary btn-sm"    onclick="Pages.Reports.render('')">All</button>
+    <button class="btn btn-secondary btn-sm"  onclick="Pages.Reports.render('Loan')">Loans</button>
+    <button class="btn btn-secondary btn-sm"  onclick="Pages.Reports.render('Client')">Clients</button>
+    <button class="btn btn-secondary btn-sm"  onclick="Pages.Reports.render('Savings')">Savings</button>
+    <button class="btn btn-secondary btn-sm"  onclick="Pages.Reports.render('Accounting')">Accounting</button>
+    <button class="btn btn-secondary btn-sm"  onclick="Pages.Reports.render('Group')">Groups</button>
+    <div class="search-bar ml-auto" style="max-width:220px">
+      <i class="fa fa-search"></i>
+      <input type="text" placeholder="Search reports…"
+             oninput="Pages.Reports.render('',this.value)"/>
+    </div>
+  </div>
+
+  <div class="grid-3" id="reportsGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">
+      <i class="fa fa-spinner fa-spin"></i> Loading reports…
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: SURVEYS
+===================================================== -->
+<div class="page" id="page-surveys">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Surveys</div>
+      <div class="page-subtitle">Poverty assessments and client survey tools</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Survey','New survey form coming soon')">
+        <i class="fa fa-plus"></i> New Survey
+      </button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th>Survey Name</th><th>Applies To</th><th>Questions</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="surveysBody">
+          <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">
+            <i class="fa fa-spinner fa-spin"></i> Loading surveys…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     PAGE: PRODUCTS
+===================================================== -->
+<div class="page" id="page-products">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Products</div>
+      <div class="page-subtitle">Loan, savings, deposit, share product configuration</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'prod-loan');Pages.Products.loadLoanProducts()">Loan Products</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-savings');Pages.Products.loadSavingsProducts()">Saving Products</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-fd')">Fixed Deposits</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-rd')">Recurring Deposits</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-shares')">Share Products</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-charges');Pages.Products.loadCharges()">Charges</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-tax')">Tax</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-delinquency');Pages.Products.loadDelinquencyBuckets()">Delinquency</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-collateral')">Collateral Mgmt</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-rates')">Floating Rates</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'prod-mix')">Products Mix</button>
+  </div>
+
+  <!-- Loan Products -->
+  <div class="tab-panel active" id="prod-loan">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Loan Product','Loan product creation wizard coming soon')">
+        <i class="fa fa-plus"></i> New Loan Product
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Principal Range</th><th>Interest Rate</th><th>Method</th><th>Status</th><th></th></tr></thead>
+          <tbody id="loanProductsBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading loan products…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Savings Products -->
+  <div class="tab-panel" id="prod-savings">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Saving Product</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Currency</th><th>Interest Rate</th><th>Compounding</th><th>Status</th></tr></thead>
+          <tbody id="savingsProductsBody">
+            <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- FD Products -->
+  <div class="tab-panel" id="prod-fd">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-vault"></i></div><h3>Fixed Deposit Products</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> New FD Product</button></div>
+  </div>
+
+  <!-- RD Products -->
+  <div class="tab-panel" id="prod-rd">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-redo"></i></div><h3>Recurring Deposit Products</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> New RD Product</button></div>
+  </div>
+
+  <!-- Share Products -->
+  <div class="tab-panel" id="prod-shares">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-chart-pie"></i></div><h3>Share Products</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> New Share Product</button></div>
+  </div>
+
+  <!-- Charges -->
+  <div class="tab-panel" id="prod-charges">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newChargeModal')"><i class="fa fa-plus"></i> New Charge</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Name</th><th>Applies To</th><th>Calculation</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="chargesBody">
+            <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading charges…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tax -->
+  <div class="tab-panel" id="prod-tax">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('newTaxModal')"><i class="fa fa-plus"></i> New Tax Component</button>
+    </div>
+    <div class="empty-state" style="padding:30px">
+      <div class="empty-state-icon"><i class="fa fa-percent"></i></div>
+      <h3>No Tax Components</h3>
+      <p>Define tax components and groups for automatic deduction.</p>
+    </div>
+  </div>
+
+  <!-- Delinquency -->
+  <div class="tab-panel" id="prod-delinquency">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Delinquency','New bucket form coming soon')"><i class="fa fa-plus"></i> Create Bucket</button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Bucket Name</th><th>Min Days</th><th>Max Days</th><th>Status</th></tr></thead>
+          <tbody id="delinquencyBody">
+            <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted)">
+              <i class="fa fa-spinner fa-spin"></i> Loading delinquency buckets…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collateral Management -->
+  <div class="tab-panel" id="prod-collateral">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-shield-alt"></i></div><h3>Collateral Management Types</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Collateral Type</button></div>
+  </div>
+
+  <!-- Floating Rates -->
+  <div class="tab-panel" id="prod-rates">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-percentage"></i></div><h3>Floating Rates</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Rate</button></div>
+  </div>
+
+  <!-- Products Mix -->
+  <div class="tab-panel" id="prod-mix">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-layer-group"></i></div><h3>Products Mix</h3><p>Define which product combinations clients can hold simultaneously.</p></div>
+  </div>
+
+</div><!-- /page-products -->
+
+<!-- =====================================================
+     PAGE: ORGANIZATION
+===================================================== -->
+<div class="page" id="page-organization">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Organization</div>
+      <div class="page-subtitle">Offices, staff, tellers, holidays, currencies and more</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="Tabs.switch(this,'org-offices');Pages.Organization.loadOffices()">Offices</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-staff');Pages.Organization.loadStaff()">Staff</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-tellers')">Tellers</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-holidays');Pages.Organization.loadHolidays()">Holidays</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-workdays')">Working Days</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-currencies');Pages.Organization.loadCurrencies()">Currencies</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-payment');Pages.Organization.loadPaymentTypes()">Payment Types</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-sms')">SMS Campaigns</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-investors')">Investors</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-originators')">Loan Originators</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-bulk')">Bulk Reassignment</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-funds')">Fund Mapping</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-password')">Password Policy</button>
+    <button class="tab-btn" onclick="Tabs.switch(this,'org-entitycheck')">Entity Data Checks</button>
+  </div>
+
+  <!-- Offices -->
+  <div class="tab-panel active" id="org-offices">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Office','New office form coming soon')"><i class="fa fa-plus"></i> New Office</button>
+    </div>
+    <div class="card"><div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Name</th><th>Parent</th><th>Opened</th><th>Status</th><th></th></tr></thead>
+      <tbody id="officesBody"><tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- Staff -->
+  <div class="tab-panel" id="org-staff">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Staff','New staff form coming soon')"><i class="fa fa-plus"></i> New Staff Member</button>
+    </div>
+    <div class="card"><div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Name</th><th>Role</th><th>Office</th><th>Loan Officer</th><th>Status</th><th></th></tr></thead>
+      <tbody id="staffBody"><tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- Tellers -->
+  <div class="tab-panel" id="org-tellers">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New Teller</button>
+    </div>
+    <div class="empty-state" style="padding:30px"><div class="empty-state-icon"><i class="fa fa-cash-register"></i></div><h3>No Tellers</h3><p>Teller management coming soon.</p></div>
+  </div>
+
+  <!-- Holidays -->
+  <div class="tab-panel" id="org-holidays">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Holiday','New holiday form coming soon')"><i class="fa fa-plus"></i> Add Holiday</button>
+    </div>
+    <div class="card"><div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Holiday</th><th>From Date</th><th>To Date</th><th>Repayment Rule</th></tr></thead>
+      <tbody id="holidaysBody"><tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- Working Days -->
+  <div class="tab-panel" id="org-workdays">
+    <div class="card card-body" style="max-width:420px">
+      <div class="fw-700 mb-3">Working Days Configuration</div>
+      <div class="form-grid fg-2 gap-3">
+        <label class="form-check"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Monday</label>
+        <label class="form-check"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Tuesday</label>
+        <label class="form-check"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Wednesday</label>
+        <label class="form-check"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Thursday</label>
+        <label class="form-check"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Friday</label>
+        <label class="form-check"><input type="checkbox" style="accent-color:var(--teal-500)"> Saturday</label>
+        <label class="form-check"><input type="checkbox" style="accent-color:var(--teal-500)"> Sunday</label>
+      </div>
+      <div class="form-group mt-4">
+        <label class="form-label">Repayment Scheduling Rule</label>
+        <select class="form-control">
+          <option>Move to Next Working Day</option>
+          <option>Move to Previous Working Day</option>
+          <option>Same Day</option>
+        </select>
+      </div>
+      <button class="btn btn-primary mt-4"
+              onclick="API.Organization.updateWorkingDays({locale:'en'}).then(()=>Toast.success('Saved','Working days updated')).catch(e=>Toast.error('Failed',e.message))">
+        <i class="fa fa-save"></i> Save Working Days
+      </button>
+    </div>
+  </div>
+
+  <!-- Currencies -->
+  <div class="tab-panel" id="org-currencies">
+    <div class="card"><div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Currency</th><th>Code</th><th>Symbol</th><th>Decimal Places</th></tr></thead>
+      <tbody id="currenciesBody"><tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- Payment Types -->
+  <div class="tab-panel" id="org-payment">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Toast.info('Payment Type','Add payment type form coming soon')"><i class="fa fa-plus"></i> Add Payment Type</button>
+    </div>
+    <div class="card"><div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Name</th><th>Description</th><th>Is Cash?</th></tr></thead>
+      <tbody id="paymentTypesBody"><tr><td colspan="3" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fa fa-spinner fa-spin"></i></td></tr></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- SMS Campaigns -->
+  <div class="tab-panel" id="org-sms">
+    <div class="page-actions mb-3">
+      <button class="btn btn-primary btn-sm" onclick="Modal.open('smsCampaignModal')"><i class="fa fa-plus"></i> New Campaign</button>
+    </div>
+    <div class="empty-state" style="padding:30px"><div class="empty-state-icon"><i class="fa fa-sms"></i></div><h3>No SMS Campaigns</h3><p>Create automated SMS campaigns for loan reminders and notifications.</p></div>
+  </div>
+
+  <!-- Investors -->
+  <div class="tab-panel" id="org-investors">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-landmark"></i></div><h3>External Investors</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Investor</button></div>
+  </div>
+
+  <!-- Loan Originators -->
+  <div class="tab-panel" id="org-originators">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-handshake"></i></div><h3>Loan Originators</h3><button class="btn btn-primary mt-3"><i class="fa fa-plus"></i> Add Originator</button></div>
+  </div>
+
+  <!-- Bulk Reassignment -->
+  <div class="tab-panel" id="org-bulk">
+    <div class="card card-body" style="max-width:500px">
+      <div class="fw-700 mb-3">Bulk Loan Reassignment</div>
+      <div class="form-grid fg-2">
+        <div class="form-group">
+          <label class="form-label">From Loan Officer <span style="color:var(--red-400)">*</span></label>
+          <select class="form-control" id="brFrom"><option value="">— Select —</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">To Loan Officer <span style="color:var(--red-400)">*</span></label>
+          <select class="form-control" id="brTo"><option value="">— Select —</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assignment Date</label>
+          <input class="form-control" type="date" id="brDate"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Office</label>
+          <select class="form-control" id="brOffice"><option value="">All Offices</option></select>
+        </div>
+      </div>
+      <button class="btn btn-primary mt-4" onclick="Forms.submitBulkReassign()">
+        <i class="fa fa-random"></i> Reassign All Loans
+      </button>
+    </div>
+  </div>
+
+  <!-- Fund Mapping -->
+  <div class="tab-panel" id="org-funds">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-coins"></i></div><h3>Fund Mapping</h3><p>Map loan products to funding sources.</p></div>
+  </div>
+
+  <!-- Password Policy -->
+  <div class="tab-panel" id="org-password">
+    <div class="card card-body" style="max-width:480px">
+      <div class="fw-700 mb-3">Password Policy</div>
+      <div class="form-grid fg-2">
+        <div class="form-group"><label class="form-label">Minimum Length</label><input class="form-control" type="number" id="pwMinLen" value="8"/></div>
+        <div class="form-group"><label class="form-label">Force Reset (days)</label><input class="form-control" type="number" id="pwResetDays" value="90"/></div>
+        <div class="form-group"><label class="form-label">Max Login Attempts</label><input class="form-control" type="number" id="pwMaxAttempts" value="5"/></div>
+        <div class="form-group"><label class="form-check mt-3"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Require uppercase letter</label></div>
+        <div class="form-group"><label class="form-check mt-3"><input type="checkbox" checked style="accent-color:var(--teal-500)"> Require number</label></div>
+        <div class="form-group"><label class="form-check mt-3"><input type="checkbox" style="accent-color:var(--teal-500)"> Require special character</label></div>
+      </div>
+      <button class="btn btn-primary mt-4"
+              onclick="API.Organization.updatePasswordPrefs({minimumLength:parseInt(document.getElementById('pwMinLen').value),passwordNeverExpires:false}).then(()=>Toast.success('Saved','Password policy updated')).catch(e=>Toast.error('Failed',e.message))">
+        <i class="fa fa-save"></i> Save Policy
+      </button>
+    </div>
+  </div>
+
+  <!-- Entity Data Checks -->
+  <div class="tab-panel" id="org-entitycheck">
+    <div class="empty-state"><div class="empty-state-icon"><i class="fa fa-clipboard-check"></i></div><h3>Entity Data Table Checks</h3><p>Define mandatory data completeness rules for each entity type.</p></div>
+  </div>
+
+</div><!-- /page-organization -->

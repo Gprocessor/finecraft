@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --brand-navy:#0a1628; --brand-navy-2:#0e1d36;
   --brand-teal:#00c9b1; --brand-teal-2:#00a896;
@@ -59,3 +60,177 @@ input,select,textarea{font-family:inherit;font-size:inherit}
 .text-right{text-align:right} .text-center{text-align:center}
 .w-full{width:100%}
 .divider{height:1px;background:var(--border-1);margin:var(--s-4) 0}
+=======
+/* ============================================================
+   FINCRAFT v2 — Design Tokens
+   Palette: Deep navy + electric teal + warm amber
+   Fonts: DM Serif Display · Inter · JetBrains Mono
+============================================================ */
+
+:root {
+  /* ── Brand Colours ──────────────────────────────────── */
+  --navy-950: #060d1a;
+  --navy-900: #0a1628;
+  --navy-800: #0f2040;
+  --navy-700: #163058;
+  --navy-600: #1e4070;
+
+  --teal-500: #00c9b1;
+  --teal-400: #00e5cc;
+  --teal-300: #5fedd8;
+  --teal-glow: rgba(0,201,177,0.15);
+  --teal-glow-sm: rgba(0,201,177,0.08);
+
+  --amber-500: #f59e0b;
+  --amber-400: #fbbf24;
+  --amber-300: #fcd34d;
+
+  --red-600:   #dc2626;
+  --red-500:   #ef4444;
+  --red-400:   #f87171;
+
+  --green-500: #22c55e;
+  --green-400: #4ade80;
+
+  --blue-400:  #60a5fa;
+  --purple-400:#a78bfa;
+
+  /* ── Typography ─────────────────────────────────────── */
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-ui:      'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* ── Layout ─────────────────────────────────────────── */
+  --sidebar-w:           260px;
+  --sidebar-collapsed-w: 68px;
+  --topbar-h:            60px;
+
+  /* ── Radii ───────────────────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ─────────────────────────────────────────── */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.25);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.4);
+  --shadow-teal: 0 0 20px rgba(0,201,177,0.25);
+
+  /* ── Transitions ─────────────────────────────────────── */
+  --transition:      200ms cubic-bezier(0.4,0,0.2,1);
+  --transition-slow: 350ms cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Dark Theme (default) ───────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-app:      #070d1b;
+  --bg-card:     #0e1a2e;
+  --bg-card-alt: #0a1422;
+  --bg-hover:    #132040;
+  --bg-stripe:   rgba(255,255,255,0.02);
+
+  --text-primary:   #e8f0fc;
+  --text-secondary: #8fa8c8;
+  --text-muted:     #4a6080;
+  --text-disabled:  #2a3f5a;
+
+  --border:       #1a2d4a;
+  --border-focus: var(--teal-500);
+  --border-hover: #243d60;
+
+  --input-bg:     #0a1422;
+  --input-border: #1a2d4a;
+
+  --sidebar-bg:   var(--navy-950);
+  --sidebar-text: rgba(255,255,255,0.85);
+  --sidebar-muted:rgba(255,255,255,0.35);
+
+  --topbar-bg:     #090f1e;
+  --topbar-border: #1a2d4a;
+  --topbar-text:   #e8f0fc;
+
+  --scrollbar-thumb: #1e3050;
+  --scrollbar-hover: var(--teal-500);
+}
+
+/* ── Light Theme ────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-app:      #eef2f7;
+  --bg-card:     #ffffff;
+  --bg-card-alt: #f8fafc;
+  --bg-hover:    #f1f5f9;
+  --bg-stripe:   rgba(0,0,0,0.015);
+
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --text-disabled:  #cbd5e1;
+
+  --border:       #e2e8f0;
+  --border-focus: var(--teal-500);
+  --border-hover: #cbd5e1;
+
+  --input-bg:     #f8fafc;
+  --input-border: #e2e8f0;
+
+  --sidebar-bg:   var(--navy-900);
+  --sidebar-text: rgba(255,255,255,0.85);
+  --sidebar-muted:rgba(255,255,255,0.40);
+
+  --topbar-bg:     #ffffff;
+  --topbar-border: #e2e8f0;
+  --topbar-text:   #0f172a;
+
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-hover: var(--teal-500);
+}
+
+/* ── Base Reset ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+/* ── Focus ring ─────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--teal-500);
+  outline-offset: 2px;
+}
+
+/* ── Selection ──────────────────────────────────────────── */
+::selection {
+  background: var(--teal-glow);
+  color: var(--teal-400);
+}
+
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes fadeIn   { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+@keyframes slideIn  { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:none; } }
+@keyframes modalIn  { from { opacity:0; transform:scale(0.96) translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes dropIn   { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+@keyframes pulse    { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+>>>>>>> 18cfd05 (Replace repository contents with provided js.zip extract)
